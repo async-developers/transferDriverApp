@@ -68,7 +68,7 @@ export class Signin extends Component {
 
     return (
       <main>
-        <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
+        <section className="login-page d-flex align-items-center justify-content-center">
           <Container>
             <Row className="justify-content-center form-bg-image" style={{ backgroundImage: `url(${BgImage})` }}>
               <Col xs={12} className="d-flex align-items-center justify-content-center">
@@ -126,13 +126,19 @@ export class Signin extends Component {
                       )}
                     </Button>
                   </Form>
-                  <div className="d-flex justify-content-center align-items-center mt-4">
+                  <div className="mt-4 text-center">
+                  <div> 
                     <span className="fw-normal">
                       Don't have an account yet?{' '}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="fw-normal">
                       <Button variant="link" as={Link} to={Routes.Signup.path} className="fw-bold">
                         Create one here
                       </Button>
                     </span>
+                    </div>
                   </div>
                 </div>
               </Col>

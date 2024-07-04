@@ -129,12 +129,12 @@ export default () => {
                                             </td>
                                         </tr>
                                     ))}
-                                    <tr className="border-0">
+                                    <tr className="border-top">
                                             <td className="px-0 border-0">
-                                                <span className="upperCase-keyword fw-bold">Total</span>
+                                                <span className="fs-30 upperCase-keyword fw-bold">Total</span>
                                             </td>
                                             <td className="text-right px-0 border-0">
-                                                RM {expenseAmount}
+                                            <span className="fs-30 upperCase-keyword fw-bold">RM {expenseAmount}</span>
                                             </td>
                                         </tr>
                                 </tbody>

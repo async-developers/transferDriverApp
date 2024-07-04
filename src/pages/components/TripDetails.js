@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt, faDownload, faCheckCircle, faRocket, faTimesCircle, faClock, faTag, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faDownload, faCheckCircle, faRocket, faTimesCircle, faClock, faTag, faArrowLeft, faLocationArrow, faMapMarkedAlt, faMapMarkerAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Card} from '@themesberg/react-bootstrap';
 import { Table, ListGroup } from '@themesberg/react-bootstrap';
 import { Link, useParams } from "react-router-dom";
@@ -46,54 +46,86 @@ export default () => {
                     {tripData && (
                             <>
                         <Card.Header>
-                        <div className="mb-6">
+                        <div className="mb-4">
                         <p><Link to="/"><FontAwesomeIcon icon={faArrowLeft} size="md"/></Link></p>
                         </div>
-                    <h1 className="text-center fw-bold">Trip details</h1>
+                    <h1 className="fw-bold">Trip details</h1>
                     <p className="lead mb-lg-2 mb-0">
                         <span>{moment(tripData.tourTime, 'HH:mm:ss').format('hh:mm A')},</span>
-                        <span className="px-2">{moment(tripData.tourDate).format('dddd')},</span>
-                        <span className="px-2">{moment(tripData.tourDate).format('Do MMMM, YYYY')}</span>
+                        <span className="px-1">{moment(tripData.tourDate).format('dddd')},</span>
+                        <span>{moment(tripData.tourDate).format('Do MMMM, YYYY')}</span>
                     </p>
                         </Card.Header>
-                      <Card.Body>
-                    <section class="mb-4 py-4 pt-0 border-bottom">
-                        <h4 className="mb-4">Trip details</h4>
+                      <Card.Body className="py-0">
+                    <section class="py-4">
                         <div className="mb-2">
-                            <FontAwesomeIcon icon={faClock} / ><span className="px-2">{moment(tripData.tourTime, 'HH:mm:ss').format('hh:mm A')}</span>
+                            {/* <FontAwesomeIcon icon={faClock} /><span className="px-2">{tripData.startLocation}</span> */}
+                            <h6>Pickup</h6>
+                            <div className="d-flex justify-content-start mt-2">
+                                <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1"/>
+                                <div className="px-2">
+                                    <p>
+                                        {tripData.startLocation}
+                                    </p>
+                        </div>
+                        </div>
                         </div>
                         <div className="mb-2">
-                            <FontAwesomeIcon icon={faTag} /><span className="px-2">RM {tripData.fare}</span>
+                            {/* <FontAwesomeIcon icon={faTag} /><span className="px-2">{tripData.endLocation}</span> */}
+                            <h6>Drop point</h6>
+                            <div className="d-flex justify-content-start mt-2">
+                                <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1"/>
+                                <div className="px-2">
+                                    <p className="mb-0">
+                                        {tripData.endLocation}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </section>
-                    <section class="mb-4 py-4 pt-0 border-bottom">
-                        <h4 className="mb-4">Customer Details</h4>
+                    <section class="py-4 pb-0 border-top">
                         <div className="mb-2">
-                            <FontAwesomeIcon icon={faClock} / ><span className="px-2">{tripData.fullName}</span>
+                            {/* <FontAwesomeIcon icon={faClock} /><span className="px-2">{tripData.startLocation}</span> */}
+                            <h6>Pickup time</h6>
+                            <div className="d-flex justify-content-start mt-2">
+                                <FontAwesomeIcon icon={faClock} className="progress-label text-secondary mt-1"/>
+                            <div className="px-2">
+                                <p>
+                                    {moment(tripData.tourTime, 'HH:mm:ss').format('hh:mm A')}
+                                </p>
+                            </div>
+                            </div>
                         </div>
                         <div className="mb-2">
-                            <FontAwesomeIcon icon={faTag} /><span className="px-2">{tripData.phone}</span>
+                            {/* <FontAwesomeIcon icon={faClock} /><span className="px-2">{tripData.startLocation}</span> */}
+                            <h6>Pickup date</h6>
+                            <div className="d-flex justify-content-start mt-2">
+                                <FontAwesomeIcon icon={faCalendarAlt} className="progress-label text-danger mt-1"/>
+                            <div className="px-2">
+                                <p>
+                                    {moment(tripData.tourDate).format('Do MMMM, YYYY')}
+                                </p>
+                            </div>
+                            </div>
                         </div>
                     </section>
-                    <section class="mb-4 py-4 pt-0 border-bottom">
-                        <h4  className="mb-4">Route</h4>
-                        <div className="mb-2">
-                            <FontAwesomeIcon icon={faClock} /><span className="px-2">{tripData.startLocation}</span>
-                        </div>
-                        <div className="mb-2">
-                            <FontAwesomeIcon icon={faTag} /><span className="px-2">{tripData.endLocation}</span>
-                        </div>
-                    </section>
-                    <section class="mb-4 py-4 pt-0 border-bottom">
-                        <h4  className="mb-4">Itinerary</h4>
+                    <section class="mb-4 py-4 border-top">
+                        <h6 >Itinerary</h6>
                         <div className="mb-2">
                             {ItineraryList(tripData.itinerary)}
                         </div>
                     </section>
-                    <section>
-                        <h4 className="mb-4">Inclusions</h4>
+                    <section  class="mb-4 py-4 border-top">
+                        <h6 className="mb-4">Inclusions</h6>
                         <div className="mb-2">
                             {ItineraryList(tripData.inclusions)}
+                        </div>
+                        </section>
+                        <section  class="mb-4 py-4 border-top">
+                        <h6 className="mb-4">Trip charges</h6>
+                        <div className="mb-2 d-flex justify-content-between">
+                            <span className="fs-30 fw-bold">Fare</span>
+                            <span className="fs-30 fw-bold">RM {tripData.fare}</span>
                         </div>
                         </section>
                     </Card.Body>

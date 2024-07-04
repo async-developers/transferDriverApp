@@ -83,11 +83,11 @@ export default ({ data }) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} />
-              <NavItem title="Upcoming Tours" icon={faCarAlt} link={Routes.UpcomingTours.path} />
-              <NavItem title="Tours History" icon={faLocationArrow} link={Routes.ToursHistory.path} />
-              <NavItem title="Profile" icon={faUserEdit} link={Routes.Profile.path} />
-              <NavItem icon={faCog}  title="Wallet" link={Routes.BootstrapTables.path} />
+              <NavItem title="Overview" link={Routes.DashboardOverview.path} target={Routes.DashboardOverview.path} icon={faChartPie} />
+              <NavItem title="Upcoming Tours" icon={faCarAlt} link={Routes.UpcomingTours.path} target={Routes.DashboardOverview.path} />
+              <NavItem title="Tours History" icon={faLocationArrow} link={Routes.ToursHistory.path} target={Routes.DashboardOverview.path} />
+              <NavItem title="Profile" icon={faUserEdit} link={Routes.Profile.path} target={Routes.DashboardOverview.path}/>
+              <NavItem icon={faCog}  title="Wallet" link={Routes.BootstrapTables.path} target={Routes.DashboardOverview.path}/>
               {/* <NavItem icon={faCog}  title="Wallet" link={Routes.Expenses.path} /> */}
             </Nav>
           </div>

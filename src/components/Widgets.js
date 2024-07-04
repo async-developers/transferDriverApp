@@ -1,7 +1,7 @@
 
 import React,{useEffect, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faInfo, faList, faListAlt, faClipboardCheck, faClipboard, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
@@ -184,8 +184,8 @@ export const CounterWidget = (props) => {
         </Row>
         <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mt-2">
           <Link to={`/trip-details/${bookingId}/${tourId}`}>
-            <Button variant="outline-primary" size="sm" className="btn upperCase-keyword">
-              Details
+          <Button variant="primary" size="sm" className="me-2 upperCase-keyword">
+                <FontAwesomeIcon icon={faClipboardList} className="me-2" />details
             </Button>
           </Link>
         </div>
@@ -257,13 +257,13 @@ export const CabHistoryWidget = (props) => {
         </Row>
         <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mt-2">
             <Link to={`/trip-end-details/${bookingId}/${tourId}`}>
-              <Button variant="outline-primary" size="sm" className="btn upperCase-keyword mx-1">
-                Details
-              </Button>
+            <Button variant="primary" size="sm" className="me-2 upperCase-keyword">
+                <FontAwesomeIcon icon={faClipboardList} className="me-2" />details
+            </Button>
             </Link>
-              <Button variant="warning" size="sm" className="btn upperCase-keyword" onClick={() => handleAddExpense()}>
-                Add expense
-              </Button>
+          <Button variant="warning" size="sm" className="me-2 upperCase-keyword">
+                <FontAwesomeIcon icon={faPlus} className="me-2" />expense
+            </Button>
             </div>
       </Card.Body>
     </Card>

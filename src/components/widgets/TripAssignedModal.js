@@ -38,17 +38,18 @@ const TripAssignedModal = ({ data }) => {
   };
 
   return (
-    <Modal show={viewModal}>
+    <Modal show={viewModal} centered className='mx-0'>
       <Modal.Header closeButton>
-        <Modal.Title>New Trip Assigned</Modal.Title>
+        <Modal.Title>Tour Name
+          <span className='d-block f-20 fw-400'>
+            Scheduled on {moment(data.tourDate).format('Do MMMM, YYYY')} At {data.tourTime}
+          </span>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Tour Name: {data.tourName}</p>
-        <p>Pick-up point: {data.startLocation}</p>
-        <p>Destination point: {data.endLocation}</p>
-        <p>Pick-up Date: {moment(data.tourDate).format('Do MMMM, YYYY')}</p>
-        <p>Pick-up Time: {data.tourTime}</p>
-        
+        <p className='fw-bold'>Pick-up: {data.startLocation}</p>
+        <p className='fw-bold'>Destination: {data.endLocation}</p>
+        <p className='fw-bold mb-0'>Fare: {data.fare}</p>
         {/* Additional details or actions can be added here */}
       </Modal.Body>
       <Modal.Footer>
