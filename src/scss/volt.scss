@@ -1,0 +1,209 @@
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/functions";
+
+// // Change variables here
+@import "volt/variables";
+
+// // Bootstrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Vendor
+@import "volt/vendor";
+
+// volt mixins & functions
+@import "volt/mixins";
+@import "volt/functions";
+
+// Utilities
+@import "volt/reboot";
+@import "volt/utilities";
+
+// Layout
+@import "volt/layout";
+
+// Components
+@import "volt/components";
+
+// write your custom styles here!
+.upperCase-keyword{
+    text-transform: capitalize;
+}
+
+.border-inline{
+  border-inline-start: .25rem solid #262B40 ;
+  box-shadow: 0 .125rem 0 rgb(38 43 64 / 12%);
+}
+
+
+
+  #description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+  }
+  
+  #infowindow-content .title {
+    font-weight: bold;
+  }
+  
+  #infowindow-content {
+    display: none;
+  }
+  
+  #map #infowindow-content {
+    display: inline;
+  }
+  
+  .pac-card {
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px !important;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    margin: 10px;
+    padding: 0 0.5em;
+    font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    font-family: Roboto;
+    padding: 0;
+  }
+  
+  #pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+  }
+  
+  .pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+  }
+  
+  .pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  
+  #pac-input {
+    margin-left: 12px;
+    padding: 10px 16px;
+    text-overflow: ellipsis;
+    width: 400px;
+    background: none padding-box rgb(255, 255, 255);
+    border: 0px;
+    padding: 0px 17px;
+    text-transform: none;
+    position: relative;
+    top:10px !important;
+    border-radius: 2px !important;
+    height: 40px;
+    vertical-align: middle;
+    color: rgb(86, 86, 86);
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 18px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+    min-width: 66px;
+  }
+  
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+  
+  #title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+  }
+  
+  #target {
+    width: 345px;
+  }
+  
+  #map1, #map2{
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.02) !important;
+    border-radius: 5px;
+  }
+
+  .navbar-light{
+    background-color: #fff;
+  }
+
+  .calendar{
+    width: 3.125rem;
+    line-height: 1;
+    flex-direction: column;
+    text-align: center;
+    border-radius: .5rem;
+  }
+
+  .calendar .calendar-month {
+    background-color: #e11d48;
+    color: #fff;
+    border-radius: .5rem .5rem 0 0;
+    padding: .275rem;
+    font-weight: 500;
+}
+.calendar .calendar-day {
+  font-size: 1.5rem;
+  padding: .25rem;
+  background-color: #f2f4f6;
+  border-top: 0;
+  border-radius: 0 0 .5rem .5rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Custom CSS for modal with drawer-like animation */
+.drawer-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050; /* Ensure it's above other content */
+  width: 430px; /* Adjust width as per your design */
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.drawer-modal.show {
+  transform: translateX(0);
+}
+
+.modal-dialog.drawer-modal .modal-content{
+  height:100%;
+}
+
+.modal.show .modal-dialog.drawer-modal{
+  margin: 0;
+}
+
+.drawer-modal.driver-modal{
+  width: 650px;
+}
+
+.custom-card{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+.card-subtitle{
+  font-size: 14px;
+}
+
+.word-elipsis{
+  width: 260px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.taxi-color-size{
+  color: #ffa723;
+  font-size: 55px !important;
+}
