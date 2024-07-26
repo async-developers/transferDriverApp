@@ -1,9 +1,9 @@
 
 import React,{useEffect, useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faInfo, faList, faListAlt, faClipboardCheck, faClipboard, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
-import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form } from '@themesberg/react-bootstrap';
+import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
 
 import Profile1 from "../assets/img/team/profile-picture-1.jpg";
@@ -63,7 +63,7 @@ export const ChoosePhotoWidget = (props) => {
 };
 
 export const OngoingTripsWidget = (props) => {
-  const { tourId, bookingId, title, pickUpDate, pickUpTime, fare, pickUpPoint, dropPoint, status } = props;
+  const { tourId, bookingId, driverId, title, pickUpDate, pickUpTime, fare, pickUpPoint, dropPoint, status } = props;
 
   const [tripStatus, setTripStatus] = useState(status);
   useEffect(() => {
@@ -72,7 +72,7 @@ export const OngoingTripsWidget = (props) => {
   console.log(tripStatus)
   const handleStartTrip = async () => {
     try {
-      await axios.put(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/tours/${bookingId}/status`, {
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/status`, {
         status: "inProgress"
       });
       setTripStatus('inProgress');
@@ -84,8 +84,9 @@ export const OngoingTripsWidget = (props) => {
 
   const handleEndTrip = async () => {
     try {
-      await axios.put(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/tours/${bookingId}/status`, {
-        status: "completed"
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/endTrip`, {
+        status: "completed",
+        driverId
       });
       setTripStatus('completed');
     }
@@ -113,11 +114,11 @@ export const OngoingTripsWidget = (props) => {
             <small>{dropPoint}</small>
           </div>
           <div>
-            <span className="card-subtitle">RM {fare}</span>
+            <span className="card-subtitle fw-bold">RM {fare}</span>
             </div>
             <div>
-            <span className="card-subtitle">{tripStatus}</span>
-          </div>
+            <Badge bg={`${tripStatus === 'Busy' ? 'danger' : tripStatus === 'pending' ? 'warning' : 'tertiary'}`} variant="primary" size="sm" className="me-2 card-subtitle badge-lg px-2 upperCase-keyword">{ tripStatus === "pending" ? "Yet to start": "completed" }</Badge>
+            </div>
 
           <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mt-2">
             <Link to={`/trip-details/${bookingId}/${tourId}`}>
@@ -152,9 +153,6 @@ export const CounterWidget = (props) => {
   return (
     <Card border="light" className="shadow-sm upperCase-keyword">
       <Card.Body>
-        <div className="timecounter">
-
-        </div>
         <Row className="d-block d-xl-flex align-items-center">
           <Col xl={5} md={12} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-xl-0">
             <div className={`icon icon-shape icon-md icon-${iconColor} rounded me-4 me-sm-0 taxi-color-size`}>
@@ -174,7 +172,7 @@ export const CounterWidget = (props) => {
               <small>{dropPoint}</small> 
             </div>
                 <div>
-                <span className="card-subtitle">RM { fare }</span>
+                <span className="card-subtitle fw-bold">RM { fare }</span>
                 </div>
                 <div>
                 <span className="card-subtitle">{ status }</span>
@@ -196,6 +194,7 @@ export const CounterWidget = (props) => {
 
 export const CabHistoryWidget = (props) => {
   const {tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, fare, icon, status, iconColor } = props;
+  console.log(title)
   const [expenseType, setExpenseType] = useState('');
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [expenseAmount, setExpenseAmount] = useState('');
@@ -210,7 +209,7 @@ export const CabHistoryWidget = (props) => {
 
   const handleAddExpenseSubmit = async () => {
     try {
-      await axios.put(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/addExpense/${tourId}`, {
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/addExpense/${bookingId}`, {
         expenseAmount,
         expenseType
       });
@@ -231,13 +230,18 @@ export const CabHistoryWidget = (props) => {
     <Card border="light" className="shadow-sm upperCase-keyword">
       <Card.Body>
         <Row className="d-block">
-          <Col xl={12} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-xl-0">
-            <div className={`icon icon-shape icon-md icon-${iconColor} rounded me-4 me-sm-0 `}>
-              <FontAwesomeIcon icon={icon} className="taxi-color-size"/>
+          <div className="mb-xl-0">
+            <div className="d-flex justify-content-between align-items-center">
+              <div className={`icon icon-shape icon-md icon-${iconColor} rounded me-4 me-sm-0 `}>
+                <FontAwesomeIcon icon={icon} className="taxi-color-size"/>
+              </div>
+              <div className="">
+              <Badge bg={`${status === 'Busy' ? 'danger' : status === 'pending' ? 'warning' : 'tertiary'}`} variant="primary" size="sm" className="me-2 card-subtitle badge-lg px-2 upperCase-keyword">{ status === "pending" ? "cancelled": "completed" }</Badge>
+              </div>
             </div>
-            <div>
-              <h5 className="mb-2">{title}</h5>
-              <div >
+            <div className="no-overflow">
+              <h5 className="mb-2 word-elipsis">{title}</h5>
+              <div className="no-overflow">
                 <span className="card-subtitle">{moment(pickUpDate).format('Do MMMM, YYYY')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}</span>
                 </div>
                 <div className="small">
@@ -249,11 +253,10 @@ export const CabHistoryWidget = (props) => {
               <small>{dropPoint}</small> 
             </div>
                 <div>
-                <span className="card-subtitle">RM { fare }</span>
-                <span variant="primary" size="sm" className="me-2 card-subtitle px-2 text-warning upperCase-keyword">{ status === "pending" ? "cancelled": "completed" }</span>
+                <span className="card-subtitle fw-bold">RM { fare }</span>
             </div>
             </div>
-          </Col>
+          </div>
         </Row>
         <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mt-2">
             <Link to={`/trip-end-details/${bookingId}/${tourId}`}>
@@ -261,7 +264,7 @@ export const CabHistoryWidget = (props) => {
                 <FontAwesomeIcon icon={faClipboardList} className="me-2" />details
             </Button>
             </Link>
-          <Button variant="warning" size="sm" className="me-2 upperCase-keyword">
+          <Button variant="warning" size="sm" className="me-2 upperCase-keyword" onClick={() => handleAddExpense()}>
                 <FontAwesomeIcon icon={faPlus} className="me-2" />expense
             </Button>
             </div>
@@ -306,10 +309,8 @@ export const ToursWidgetWithoutIcon = (props) => {
   const {title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, fare, icon, status, iconColor } = props;
 
   return (
-    // <Card border="light" className="shadow-sm upperCase-keyword">
-    //   <Card.Body>
         <Row className="d-block">
-          <Col xl={5} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-xl-0">
+          <Col>
             <div>
               <h5 className="mb-2 word-elipsis upperCase-keyword">{title}</h5>
               <div >
@@ -324,8 +325,8 @@ export const ToursWidgetWithoutIcon = (props) => {
               <small>{dropPoint}</small> 
             </div>
                 <div className="mt-2">
-                <span className="card-subtitle">RM { fare }</span>
-                <span variant="primary" size="sm" className="me-2 card-subtitle px-2 text-warning upperCase-keyword">{ status }</span>
+                <span className="card-subtitle fw-bold">RM { fare }</span>
+                <Badge bg={`${status === 'pending' ? 'warning' : 'tertiary'}`} variant="primary" size="sm" className="mx-2 me-2 card-subtitle badge-lg px-2 upperCase-keyword">{ status }</Badge>
             </div>
             </div>
           </Col>

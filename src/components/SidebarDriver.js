@@ -4,8 +4,8 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faBoxOpen, faChartPie, faCog, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faCalendarAlt, faMapPin, faInbox, faRocket, faCarAlt, faCar, faCaravan, faUserAlt, faUserEdit, faPenAlt, faPencilAlt, faLocationArrow } from "@fortawesome/free-solid-svg-icons";
-import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
+import { faChartPie, faCarAlt, faCog, faSignOutAlt, faTimes, faUserEdit, faLocationArrow } from "@fortawesome/free-solid-svg-icons";
+import { Nav, Badge, Image, Button, Navbar } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { Routes } from "../routes";
@@ -83,11 +83,11 @@ export default ({ data }) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="Overview" link={Routes.DashboardOverview.path} target={Routes.DashboardOverview.path} icon={faChartPie} />
-              <NavItem title="Upcoming Tours" icon={faCarAlt} link={Routes.UpcomingTours.path} target={Routes.DashboardOverview.path} />
-              <NavItem title="Tours History" icon={faLocationArrow} link={Routes.ToursHistory.path} target={Routes.DashboardOverview.path} />
-              <NavItem title="Profile" icon={faUserEdit} link={Routes.Profile.path} target={Routes.DashboardOverview.path}/>
-              <NavItem icon={faCog}  title="Wallet" link={Routes.BootstrapTables.path} target={Routes.DashboardOverview.path}/>
+              <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} />
+              <NavItem title="Upcoming Trips" icon={faCarAlt} link={Routes.UpcomingTours.path} />
+              <NavItem title="Trips History" icon={faLocationArrow} link={Routes.ToursHistory.path} />
+              <NavItem title="Profile" icon={faUserEdit} link={Routes.Profile.path} />
+              <NavItem icon={faCog}  title="Wallet" link={Routes.Wallet.path} />
               {/* <NavItem icon={faCog}  title="Wallet" link={Routes.Expenses.path} /> */}
             </Nav>
           </div>

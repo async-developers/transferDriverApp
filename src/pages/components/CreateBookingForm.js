@@ -35,7 +35,7 @@ const CreateBookingForm = () => {
 
   const fetchTourList = async () => {
     try {
-      const response = await axios.get('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchTourList'); // Replace with your API endpoint
+      const response = await axios.get('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchTourList'); // Replace with your API endpoint
       setTourList(response.data); // Assuming response.data is an array of tours
     } catch (error) {
       handleRequestError('Error fetching tours. Please try again later.');
@@ -74,7 +74,7 @@ const CreateBookingForm = () => {
     clearMessages();
 
     try {
-      await axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/booking', formData);
+      await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/booking', formData);
       setSuccessMessage('Booking submitted successfully.');
       resetForm();
     } catch (error) {

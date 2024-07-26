@@ -212,6 +212,10 @@
   height: 100vh;
 }
 
+.f-12{
+  font-size: 12px;
+}
+
 .f-20{
   font-size: 16px;
 }
@@ -222,4 +226,31 @@
 
 .fs-30{
   font-size: 30px;
+}
+
+.scrollable-y{
+  overflow-y: scroll;
+}
+
+
+.mb-0-imp{
+  margin-bottom: 0 !important;
+}
+
+.no-overflow{
+  overflow: hidden;
+}
+// Responsive changes
+@media screen and (width >= 300px) and (width <= 1240px) {
+  .responsive-modal-font-title.modal-title {
+    font-size: 15px;
+  }
+
+  .word-elipsis{
+    width: 100%;
+  }
+
+  .drawer-modal{
+    width: 100%;
+  }
 }

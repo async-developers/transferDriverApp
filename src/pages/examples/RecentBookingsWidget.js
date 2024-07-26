@@ -18,7 +18,7 @@ const RecentBookingsWidget = () => {
     setLoading(true);
     try {
       // Replace with actual endpoint to fetch recent bookings
-      const response = await axios.get('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchRecentBookings');
+      const response = await axios.get('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchRecentBookings');
       setBookings(response.data); // Assuming response.data is an array of booking objects
     } catch (error) {
       setError('Error fetching recent bookings. Please try again later.');

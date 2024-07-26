@@ -10,7 +10,6 @@ import Signup from './examples/Signup';
 import Profile from './Profile';
 
 import DriverDetailsPage from './examples/DriversDetailsPage';
-import BootstrapTables from '../pages/tables/BootstrapTables'
 
 // Components
 import WithAuth from '../components/Authentication/WithAuth';
@@ -22,6 +21,7 @@ import DashboardOverview from './dashboard/DashboardOverview';
 import TourExpenses from './examples/CabDriver/TourExpenses/TourExpenses';
 import TripDetails from './components/TripDetails';
 import PostTripDetails from './components/PostTripDetails';
+import Wallet from './Wallet';
 
 
 const RoutesConfig = () => (
@@ -29,19 +29,17 @@ const RoutesConfig = () => (
     <Switch>
       <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
       <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
-      <RouteWithSidebar exact path="/trip-details/:bookingId/:id" component={TripDetails} />
-      <RouteWithSidebar exact path="/trip-end-details/:bookingId/:id" component={PostTripDetails} />
-      <RouteWithSidebar exact path="/tours-history" component={WithAuth(TourHistory)} role="driver" />
+      <RouteWithSidebar exact path="/trip-details/:bookingId/:id" component={WithAuth(TripDetails)} />
+      <RouteWithSidebar exact path="/trip-end-details/:bookingId/:id" component={WithAuth(PostTripDetails)} />
+      <RouteWithSidebar exact path="/tours-history" component={WithAuth(TourHistory)} />
 
       {/* Driver routes */}
       <RouteWithSidebar exact path={Routes.DashboardOverview.path} component={WithAuth(DashboardOverview)} />
-      <RouteWithSidebar exact path={Routes.Profile.path} component={WithAuth(Profile)} role="driver" />
-      <RouteWithSidebar exact path={Routes.BootstrapTables.path} component={WithAuth(BootstrapTables)} role="driver" />
-      <RouteWithSidebar exact path={Routes.UpcomingTours.path} component={WithAuth(CabDriverUpcomingTours)} role="driver" />
-      <RouteWithSidebar exact path={Routes.DriverDetails.path} component={WithAuth(DriverDetailsPage)} role="driver" />
-      <RouteWithSidebar exact path={Routes.ToursHistory.path} component={WithAuth(TourHistory)} role="driver" />
-      <RouteWithSidebar exact path={Routes.Expenses.path} component={WithAuth(TourExpenses)} role="driver" />
-
+      <RouteWithSidebar exact path={Routes.Profile.path} component={WithAuth(Profile)} />
+      <RouteWithSidebar exact path={Routes.Wallet.path} component={WithAuth(Wallet)} />
+      <RouteWithSidebar exact path={Routes.UpcomingTours.path} component={WithAuth(CabDriverUpcomingTours)} />
+      <RouteWithSidebar exact path={Routes.DriverDetails.path} component={WithAuth(DriverDetailsPage)} />
+      <RouteWithSidebar exact path={Routes.ToursHistory.path} component={WithAuth(TourHistory)} />
       <Redirect to={Routes.NotFound.path} />
     </Switch>
   </>

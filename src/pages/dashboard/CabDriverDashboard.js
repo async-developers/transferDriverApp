@@ -14,6 +14,7 @@ import LoaderComponent from '../components/LoaderComponent';
 
 const CabDriverDashboard = ({ data }) => {
   const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState('');
   const [nextTrip, setNextTrip] = useState(null);
   const [loading, setLoading] = useState(true); // State to manage loading state
 
@@ -24,22 +25,26 @@ const CabDriverDashboard = ({ data }) => {
     totalRides: 0,
     totalExpenses: 0,
     recentTrips: [],
-    upcomingTrips: [],
-    onGoingTrips: []
+    upcomingTrips: null,
+    onGoingTrips: null
   });
 
   useEffect(() => {
     setUserName(data.username);
+    setUserId(data.id);
     fetchDriverAnalytics();
   }, [data]);
 
   const fetchDriverAnalytics = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/driverAnalytics?driverId=${data.id}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/driverAnalytics?driverId=${data.id}`);
       setAnalyticsData(response.data);
       const upcomingTrip = findNextTrip(response.data.upcomingTrips);
 
-      setNextTrip({ ...upcomingTrip, tourTime: moment(`${upcomingTrip.tourDate} ${upcomingTrip.tourTime}`, 'YYYY-MM-DD HH:mm:ss').toDate() });
+      setNextTrip({
+        ...upcomingTrip,
+        tourTime: moment(`${upcomingTrip.tourDate} ${upcomingTrip.tourTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
+      });
 
       const interval = setInterval(() => {
         setNextTrip(currentTrip => {
@@ -59,42 +64,14 @@ const CabDriverDashboard = ({ data }) => {
     }
   };
 
-  const {
-    totalAssignedTours,
-    totalCompletedTours,
-    totalRevenue,
-    totalRides,
-    recentTrips,
-    upcomingTrips,
-    onGoingTrips
-  } = analyticsData;
-
   const findNextTrip = (trips) => {
     if (!trips || trips.length === 0) return null;
 
-    const pendingTrips = trips.filter(trip => trip.status === 'pending').sort((a, b) => {
-      return moment(a.tourDate).isAfter(moment(b.tourDate)) ? 1 : -1;
-    });
+    const pendingTrips = trips
+      .filter(trip => trip.status === 'pending')
+      .sort((a, b) => moment(a.tourDate).isAfter(moment(b.tourDate)) ? 1 : -1);
 
     return pendingTrips.length > 0 ? pendingTrips[0] : null;
-  };
-
-  const formatTimeRemaining = (tourTime) => {
-    if (!tourTime) return '';
-
-    const currentTime = moment();
-    const tourStartTime = moment(tourTime);
-
-    if (currentTime.isAfter(tourStartTime)) {
-      return 'Trip has already started';
-    }
-
-    const duration = moment.duration(tourStartTime.diff(currentTime));
-    const hours = Math.floor(duration.asHours());
-    const minutes = duration.minutes();
-    const seconds = duration.seconds();
-
-    return `${hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
   const getTripDetails = () => {
@@ -102,16 +79,16 @@ const CabDriverDashboard = ({ data }) => {
   }
 
   if (loading) {
-    return <LoaderComponent />; // Replace LoaderComponent with your loader component
+    return <LoaderComponent />;
   }
 
   return (
     <>
       <Row>
-        <Col md="12">
+        <Col md={12}>
           <div className="py-4">
-            <h3 className="upperCase-keyword">Welcome back, {userName}</h3>
-            <span> Track your sales activity, rides and drivers.</span>
+            <h3 className="text-uppercase">Welcome back, {userName}</h3>
+            <span>Track your trips activity, rides and bookings.</span>
           </div>
           <div className="py-4">
             <h3 className='mb-3'>On Going Trip</h3>
@@ -122,6 +99,7 @@ const CabDriverDashboard = ({ data }) => {
               <div className='custom-card-details py-4 px-4'>
                 {analyticsData.onGoingTrips !== null ? (
                   <OngoingTripsWidget
+                    driverId={userId}
                     bookingId={analyticsData.onGoingTrips.tourId}
                     tourId={analyticsData.onGoingTrips.tourName}
                     title={analyticsData.onGoingTrips.tourListName}
@@ -141,10 +119,10 @@ const CabDriverDashboard = ({ data }) => {
             </div>
           </div>
           <Row className="d-flex justify-content-md-center">
-            <Col xs={12} sm={6} xl={3} className="justify-content-md-center">
+            <Col xs={12} sm={6} lg={3} className="justify-content-md-center">
               <div className='mb-2 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4'>
                 <h5 className='mb-0 upperCase-keyword'>upcoming trip</h5>
-                <Link to={`/upcoming-tours`}>
+                <Link to="/upcoming-tours">
                   <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails}>
                     <FontAwesomeIcon icon={faPlus} /> All trips
                   </Button>
@@ -153,7 +131,7 @@ const CabDriverDashboard = ({ data }) => {
             </Col>
           </Row>
           <Row className="d-flex justify-content-md-center">
-            <Col xs={12} sm={6} xl={3} className="mb-4">
+            <Col xs={12} sm={6} lg={3} className="mb-4">
               {analyticsData.upcomingTrips !== null ? (
                 <CounterWidget
                   bookingId={analyticsData.upcomingTrips.tourId}
@@ -173,7 +151,7 @@ const CabDriverDashboard = ({ data }) => {
             </Col>
           </Row>
           <Row className="d-flex justify-content-md-center">
-            <Col xs={12} sm={6} xl={3} className="justify-content-md-center">
+            <Col xs={12} sm={6} lg={3} className="justify-content-md-center">
               <div className='mb-2 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4'>
                 <h5 className='mb-0 upperCase-keyword'>past</h5>
                 <Link to={`/tours-history`}>
@@ -185,7 +163,7 @@ const CabDriverDashboard = ({ data }) => {
             </Col>
           </Row>
           <Row>
-            <Col xs={12} sm={6} xl={3} className="mb-4">
+            <Col xs={12} sm={6} lg={3} className="mb-4">
               <TourListings data={data} />
             </Col>
           </Row>

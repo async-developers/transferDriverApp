@@ -19,7 +19,7 @@ const TourExpensesList = ({data}) => {
 
   const fetchTours = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchUpcomingAssignedTours?driverId=${data.id}&page=${currentPage}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchUpcomingAssignedTours?driverId=${data.id}&page=${currentPage}`);
       setTours(response.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -34,7 +34,7 @@ const TourExpensesList = ({data}) => {
 
   const handleAddExpenseSubmit = async () => {
     try {
-      await axios.put(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/addExpense/${selectedTour.tourId}`, {
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/addExpense/${selectedTour.tourId}`, {
         expenseAmount: expenseAmount,
       });
       setShowAddExpenseModal(false);

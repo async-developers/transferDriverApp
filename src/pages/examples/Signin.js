@@ -36,7 +36,7 @@ export class Signin extends Component {
     this.setState({ loading: true });
 
     axios
-      .post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/login', { email, password, userRole })
+      .post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/login', { email, password, userRole })
       .then(res => {
         if (res.status === 200) {
           const { data: { token, userRole } } = res;
@@ -70,7 +70,7 @@ export class Signin extends Component {
       <main>
         <section className="login-page d-flex align-items-center justify-content-center">
           <Container>
-            <Row className="justify-content-center form-bg-image" style={{ backgroundImage: `url(${BgImage})` }}>
+            <Row className="justify-content-center form-bg-image">
               <Col xs={12} className="d-flex align-items-center justify-content-center">
                 <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                   <div className="text-center text-md-center mb-4 mt-md-0">

@@ -5,14 +5,10 @@ import axios from 'axios';
 
 const TripAssignedModal = ({ data }) => {
   const [viewModal, setViewModal] = useState(true);
-  console.log(data)
   const handleAccept = () => {
-    // Make an API call to accept the trip
-    axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/acceptTrip', { tourId: data.tourId, driverId: data.driverId })
+    axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/acceptTrip', { tourId: data.tourId, driverId: data.driverId })
       .then(response => {
         setViewModal(false);
-        console.log('Trip accepted successfully', response.data);
-        // Close the modal or update UI as needed
       })
       .catch(error => {
         // Handle error
@@ -23,7 +19,7 @@ const TripAssignedModal = ({ data }) => {
 
   const handleDecline = () => {
     // Make an API call to decline the trip
-    axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/declineTrip', { tourId: data.tourId, driverId: data.driverId })
+    axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/declineTrip', { tourId: data.tourId, driverId: data.driverId })
       .then(response => {
         // Handle success
         setViewModal(false);
@@ -39,17 +35,18 @@ const TripAssignedModal = ({ data }) => {
 
   return (
     <Modal show={viewModal} centered className='mx-0'>
-      <Modal.Header closeButton>
-        <Modal.Title>Tour Name
+      <Modal.Header>
+        <Modal.Title className='d-block w-100 responsive-modal-font-title'>
+            {data.bookedTourName}
           <span className='d-block f-20 fw-400'>
             Scheduled on {moment(data.tourDate).format('Do MMMM, YYYY')} At {data.tourTime}
           </span>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className='fw-bold'>Pick-up: {data.startLocation}</p>
-        <p className='fw-bold'>Destination: {data.endLocation}</p>
-        <p className='fw-bold mb-0'>Fare: {data.fare}</p>
+        <p> <span className='fw-bold'>Pick-up:</span> {data.startLocation}</p>
+        <p> <span className='fw-bold'>Destination:</span> {data.endLocation}</p>
+        <p> <span className='fw-bold mb-0'>Fare:</span> {data.fare}</p>
         {/* Additional details or actions can be added here */}
       </Modal.Body>
       <Modal.Footer>

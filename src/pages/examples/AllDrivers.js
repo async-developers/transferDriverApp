@@ -18,7 +18,7 @@ const AllDrivers = () => {
 
   const fetchDrivers = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchDrivers?page=${currentPage}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchDrivers?page=${currentPage}`);
       setDrivers(response.data);
       setTotalPages(response.data.totalPages); // Update total pages from response
     } catch (error) {

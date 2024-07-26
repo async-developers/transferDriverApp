@@ -43,7 +43,7 @@ const ProfilePage = ({ userData }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchProfile', userData);
+      const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchProfile', userData);
       setUser(response.data); // Assuming response.data contains user details
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -58,7 +58,7 @@ const ProfilePage = ({ userData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/updateProfile', formData);
+      const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/updateProfile', formData);
       setUser(response.data); // Assuming response.data contains updated user details
       setEditMode(false); // Exit edit mode after successful update
       console.log('Profile updated successfully:', response.data);
@@ -88,14 +88,14 @@ const ProfilePage = ({ userData }) => {
           <h4>My Profile</h4>
           <p className="mb-0">Your important information.</p>
         </div>
-        <div className="d-flex justify-content-end flex-wrap text-center">
+        </Row>
+        <div className="d-flex justify-content-end flex-wrap text-center mb-2">
           {!editMode && (
             <Button variant="primary" className="text-dark me-2 dropdown-toggle btn btn-secondary" onClick={toggleEditMode}>
               <FontAwesomeIcon icon={faEdit} /> Edit
             </Button>
           )}
         </div>
-      </Row>
 
       <Row>
         <Col xs={12} md={8} className="mt-1">

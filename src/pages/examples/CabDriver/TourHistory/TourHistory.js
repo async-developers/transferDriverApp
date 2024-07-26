@@ -12,10 +12,10 @@ export default ({data}) => {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item active>Tours History</Breadcrumb.Item>
+            <Breadcrumb.Item active>Trips History</Breadcrumb.Item>
           </Breadcrumb>
-          <h4>Tours History</h4>
-          <p className="mb-0">Here is the list of all tours.</p>
+          <h4>Trips History</h4>
+          <p className="mb-0">Here is the list of all previous trips.</p>
         </div>
       </div>
         <TourListHistory data={data}/>

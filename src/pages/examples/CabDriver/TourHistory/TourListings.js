@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col, Table, Card, Pagination, Dropdown, Button } from '@themesberg/react-bootstrap';
-import { faCar, faEdit, faTrashAlt, faEye, faExpand, faMinus} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
+
+import { faCar } from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
-import moment from 'moment-timezone';
-import { CabHistoryWidget, CounterWidget } from '../../../../components/Widgets';
+import { CabHistoryWidget } from '../../../../components/Widgets';
 
 const TourListings = ({data}) => {
   const [tours, setTours] = useState([]);
@@ -17,7 +15,8 @@ const TourListings = ({data}) => {
 
   const fetchTours = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
+      console.log(response.data)
       setTours(response.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -40,7 +39,7 @@ const TourListings = ({data}) => {
                 <CabHistoryWidget
                 bookingId={tour.tourId}
                 tourId={tour.tourName}
-                title={tour.startLocation}
+                title={tour.bookedTourName}
                 pickUpDate={tour.tourDate}
                 pickUpTime={tour.tourTime}
                 pickUpPoint={tour.startLocation}

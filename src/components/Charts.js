@@ -30,7 +30,7 @@ export const SalesValueChart = ({ data }) => {
 
   useEffect(() => {
     // Fetch data using Axios (assuming an endpoint)
-    axios.get('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchDataForOrdersWidget')
+    axios.get('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchDataForOrdersWidget')
       .then(response => {
         const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         let seriesArray = new Array(daysOfWeek.length).fill(0);

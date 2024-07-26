@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, Col, Table, Card, Pagination, Dropdown, Button } from '@themesberg/react-bootstrap';
-import { faCar, faEdit, faTrashAlt, faEye, faExpand, faMinus} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
+import { faCar, faEdit, faTrashAlt, faEye, faExpand, faMinus, faCarAlt, faCarCrash, faTaxi} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
 import moment from 'moment-timezone';
 import { CabHistoryWidget, CounterWidget } from '../../../../components/Widgets';
@@ -17,7 +17,7 @@ const TourListHistory = ({data}) => {
 
   const fetchTours = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
       setTours(response.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -40,32 +40,29 @@ const TourListHistory = ({data}) => {
               ) :
               tours.map((tour) => (
           <CabHistoryWidget
-          title={tour.startLocation}
+          bookingId={tour.tourId}
+          tourId={tour.tourName}
+          title={tour.bookedTourName}
           pickUpDate={tour.tourDate}
           pickUpTime={tour.tourTime}
           pickUpPoint={tour.startLocation}
           dropPoint={tour.endLocation}
           fare={tour.fare}
-          icon={faCar}
+          icon={faTaxi}
           status={tour.status}
           iconColor="shape-secondary"
           detailsButtonEnabled="false"
         />
               ))}
         </Card.Body>
-              </Card>
       {/* Pagination */}
       <div className="d-flex justify-content-center">
       <Pagination>
           <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} >Previous</Pagination.Prev>
-          {[...Array(totalPages)].map((_, index) => (
-            <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => handlePageChange(index + 1)}>
-              {index + 1}
-            </Pagination.Item>
-          ))}
           <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} >Next</Pagination.Next>
         </Pagination>
       </div>
+      </Card>
     </div>
   );
 };

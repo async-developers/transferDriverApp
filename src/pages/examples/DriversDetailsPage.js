@@ -10,7 +10,7 @@ const DriverDetailsPage = ({ driver }) => {
   useEffect(() => {
     if (!driver) return;
     
-    axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchDriversById?id=${driver.driverId}`)
+    axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchDriversById?id=${driver.driverId}`)
       .then((driverDetailsRes) => {
         setDriverData(driverDetailsRes.data);
         setDriverProfile(driverDetailsRes.data[0]);

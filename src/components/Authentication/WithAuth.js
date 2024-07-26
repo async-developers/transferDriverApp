@@ -41,7 +41,7 @@ export default function withAuth(ComponentInside) {
       }
 
       try {
-        const response = await axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/token', { token });
+        const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/token', { token });
         if (response.status === 200) {
           const { email, userRole } = response.data;
           this.fetchUserData(email, userRole);
@@ -56,7 +56,7 @@ export default function withAuth(ComponentInside) {
 
     fetchUserData = async (email, userRole) => {
       try {
-        const userDataResponse = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/loginDetails?email=${email}&userRole=${userRole}`);
+        const userDataResponse = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/loginDetails?email=${email}&userRole=${userRole}`);
         const { driverId, firstName, lastName, email: emailAddress } = userDataResponse.data;
         this.setState({
           loading: false,
@@ -76,7 +76,7 @@ export default function withAuth(ComponentInside) {
 
     fetchNewTasks = async (driverId) => {
       try {
-        const userDataResponse = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchActionsOnAssignedTours?driverId=${driverId}`);
+        const userDataResponse = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchActionsOnAssignedTours?driverId=${driverId}`);
         this.setState({newTasks: userDataResponse.data})
         if(userDataResponse.data.length > 0){
           this.showTripAssignedModal();

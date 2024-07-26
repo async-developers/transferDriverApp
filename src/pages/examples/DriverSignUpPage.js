@@ -66,7 +66,7 @@ export class DriverSignUpPage extends Component {
     this.setState({ loading: true, error: '', success: '' });
 
     try {
-      const response = await axios.post('http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/signup', this.state);
+      const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/signup', this.state);
 
       if (response.status === 200 || response.status === 201) {
         this.setState({ success: 'Signup successful.', loading: false });

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Row, Card, Image, Table, Button, Modal, Form, Pagination, Dropdown } from '@themesberg/react-bootstrap';
-import { faPlus, faEdit, faTrashAlt, faEye, faExpand, faMinus} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
+import { Col, Row, Card, Button, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
+import { faClipboardList} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
 import moment from 'moment-timezone';
 import { ToursWidgetWithoutIcon } from '../../../components/Widgets';
+import TripInformation from '../../subComponents/TripInformation';
 
 const TourList = ({ data }) => {
   const [tours, setTours] = useState([]);
@@ -29,7 +30,7 @@ const TourList = ({ data }) => {
 
   const fetchTours = async () => {
     try {
-      const response = await axios.get(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/fetchUpcomingAssignedTours?driverId=${data.id}&page=${currentPage}`);
+      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchUpcomingAssignedTours?driverId=${data.id}&page=${currentPage}`);
       setTours(response.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -49,7 +50,7 @@ const TourList = ({ data }) => {
 
   const handleAddExpenseSubmit = async () => {
     try {
-      await axios.put(`http://ec2-54-208-162-205.compute-1.amazonaws.com:8082/addExpense/${selectedTour.tourId}`, {
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/addExpense/${selectedTour.tourId}`, {
         expenseAmount,
         expenseType
       });
@@ -99,53 +100,35 @@ const TourList = ({ data }) => {
                 tours.map((tour) => (
                   <Card key={tour.tourId} className="mb-3">
                   <Card.Body>
-                    <Row className="align-items-center d-flex d-sm-flex">
-                      <Col xs={3} sm={6} xl={3} >
-                        <div className="calendar d-flex">
-                          <span className="calendar-month">{moment(tour.tourCreatedAt).format('MMM')}</span>
-                          <span className="calendar-day py-2">{moment(tour.tourCreatedAt).format('DD')}</span>
+                    <div>
+                      <div className='calendar-card-icon-wrapper'>
+                        <div className="calendar d-flex mb-3 mb-sm-0">
+                          <span className="calendar-month">{moment(tour.tourDate).format('MMM')}</span>
+                          <span className="calendar-day py-2">{moment(tour.tourDate).format('DD')}</span>
                         </div>
-                      </Col>
-                      <Col xs={9} sm={6} xl={3}>
+                      </div>
+                      <div className='trip-content'>
                         <div className="card-body-content">
                           {/* <Card.Title className='word-elipsis'>{tour.tourListName}</Card.Title> */}
-                          <Card.Text>
-                            {/* <span className="small fw-bold">
-                              Created By {tour.firstName} {tour.lastName} on {moment(tour.tourCreatedAt).format('Do MMMM, YYYY')}
-                            </span> */}
-                                            <ToursWidgetWithoutIcon
-                title={tour.startLocation}
-                pickUpDate={tour.tourDate}
-                pickUpTime={tour.tourTime}
-                pickUpPoint={tour.startLocation}
-                dropPoint={tour.endLocation}
-                fare={tour.fare}
-                status={tour.status}
-                iconColor="shape-secondary"
-                detailsButtonEnabled="false"
-                />
-                          </Card.Text>
+                            <ToursWidgetWithoutIcon
+                              title={tour.tourListName}
+                              pickUpDate={tour.tourDate}
+                              pickUpTime={tour.tourTime}
+                              pickUpPoint={tour.startLocation}
+                              dropPoint={tour.endLocation}
+                              fare={tour.fare}
+                              status={tour.status}
+                              iconColor="shape-secondary"
+                              detailsButtonEnabled="false"
+                            />
                         </div>
-                        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-0">
-                        <Dropdown className="btn-toolbar">
-                            <Dropdown.Toggle as={Button} variant="primary" size="sm" className="me-2">
-                              <FontAwesomeIcon icon={faPlus} className="me-2" />Actions
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu className="dashboard-dropdown dropdown-menu-left mt-2">
-                              <Dropdown.Item className="fw-bold" onClick={() => handleViewDetails(tour)}>
-                                <FontAwesomeIcon icon={faExpand} className="me-2" /> View
-                              </Dropdown.Item>
-                              <Dropdown.Item className="fw-bold" onClick={() => handleViewDetails(tour)}>
-                                <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit details
-                              </Dropdown.Item>
-                              <Dropdown.Item className="fw-bold" onClick={() => toggleDeleteAlert(tour.tourId)}>
-                                <FontAwesomeIcon icon={faMinus} className="me-2" /> Delete details
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
+                        <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center py-4 pb-0">
+                          <Button variant="primary" size="sm" className="upperCase-keyword" onClick={() => handleViewDetails(tour)}>
+                            <FontAwesomeIcon icon={faClipboardList} /> More Details
+                          </Button>
                         </div>
-                      </Col>
-                    </Row>
+                      </div>
+                    </div>
                   </Card.Body>
                 </Card>
                 ))
@@ -198,26 +181,8 @@ const TourList = ({ data }) => {
           <Modal.Title>Tour Details</Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleCloseTourDetailsModal} />
         </Modal.Header>
-        <Modal.Body>
-          {selectedTourDetails && (
-            <>
-            <div className=''>
-              <p><strong>Customer Name:</strong> {selectedTourDetails.customerName}</p>
-              <p><strong>Booking Date:</strong> {moment(selectedTourDetails.createdAt).format('Do MMMM, YYYY')}</p>
-              <p><strong>Pick Up Point:</strong> <span className="fw-bold text-danger">{selectedTourDetails.startLocation}</span></p>
-              <p><strong>Drop Off:</strong> <span className="fw-bold text-success">{selectedTourDetails.endLocation}</span></p>
-              <p><strong>Journey Date & Time:</strong> {`${moment(selectedTourDetails.tourDate).format('Do MMMM, YYYY')} ${moment(selectedTourDetails.tourTime, 'HH:mm:ss').format('hh:mm A')}`}</p>
-              <p><strong>Fare:</strong> ${selectedTourDetails.fare}</p>
-              <p><strong>Status:</strong> <span className={`fw-bold upperCase-keyword me-2 btn btn-sm ${selectedTourDetails.status === 'Busy' ? 'btn-danger' : selectedTourDetails.status === 'pending' ? 'btn-warning' : 'btn-tertiary'}`}>{selectedTourDetails.status}</span></p>
-            </div>
-            <div className='section-details'>
-              <h5>Itinerary</h5>
-            </div>
-            <div className='section-details'>
-              <h5>Inclusions</h5>
-            </div>
-            </>
-          )}
+        <Modal.Body className='px-0 py-0 scrollable-y'>
+          {selectedTourDetails && TripInformation(selectedTourDetails)}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseTourDetailsModal}>

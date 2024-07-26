@@ -5,9 +5,9 @@ export const Routes = {
     ToursHistory: { path: "/tours-history" },
     Profile: { path: "/profile" },
     Expenses: { path: "/expenses" },
-    DriverDetails: { path: "/examples/DriversDetails.js" },
-    BootstrapTables: { path: "/tables/bootstrap-tables" },
+    DriverDetails: { path: "/DriversDetails" },
+    Wallet: { path: "/wallet" },
     Signin: { path: "/sign-in" },
     Signup: { path: "/sign-up" },
-    NotFound: { path: "/examples/404" },
+    NotFound: { path: "/NotFound/404" },
 };

@@ -1,6 +1,7 @@
 @mixin modal-variant($background) {
 	.modal-title {
 		color: color-yiq($background);
+		font-size: 15px;
 	}
 	.modal-header,
 	.modal-footer {
