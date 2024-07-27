@@ -187,10 +187,10 @@
 }
 
 .custom-card{
-  border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   background-color: #fff;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 .card-subtitle{
   font-size: 14px;
@@ -253,4 +253,71 @@
   .drawer-modal{
     width: 100%;
   }
+}
+
+.required label::after {
+  content:" *";
+  color: red;
+}
+
+.space-after{
+  white-space: pre;
+}
+
+.disable{
+  cursor: default;
+  pointer-events: none;
+}
+
+.dashed-line{
+  background-image: url(../assets/img/driver/dashed-border.svg) !important;
+  background-repeat: repeat;
+  height: .1rem;
+  width: 100%;
+  background-size: unset !important;
+  display: flex;
+  margin-left: 2rem !important;
+  margin-right: 2rem !important;
+  flex-basis: 85%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  text-align: justify !important;
+}
+
+.timeDetails{
+  background-color: #f5f5f5;
+  padding: 5px 10px;
+  white-space: pre;
+  font-size: 8px;
+}
+
+.detail-button{
+  font-size: 12px;
+  font-weight: 400;
+  width: 100%;
+}
+
+.tour-title{
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+.dashed-before{
+  position: relative;
+}
+
+.dashed-before::before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  border-top: 1px dotted black;
+}
+
+.multi-button-display{
+  width: 48%;
 }

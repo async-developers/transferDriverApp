@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCog, faHome, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Breadcrumb } from '@themesberg/react-bootstrap';
 
 import TourListHistory from "./TourListHistory";
 

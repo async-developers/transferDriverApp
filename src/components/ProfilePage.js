@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 
 const ProfilePage = ({ userData }) => {
   const [user, setUser] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,31 +25,37 @@ const ProfilePage = ({ userData }) => {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchProfile', userData);
+        setUser(response.data); // Assuming response.data contains user details
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
     fetchUserData();
-    setFormData({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      birthDate: moment(userData.birthDate).format('YYYY-MM-DD'),
-      email: userData.email,
-      contactNumber: userData.contactNumber,
-      address: userData.address,
-      joinDate: moment(userData.joiningDate).format('YYYY-MM-DD'),
-      approvalStatus: userData.approvalStatus || 'approved',
-      driverLicence: userData.driverLicence,
-      validUntil: userData.validUntil,
-      carNumber: userData.carNumber,
-      carModel: userData.carModel
-    });
   }, [userData]);
 
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchProfile', userData);
-      setUser(response.data); // Assuming response.data contains user details
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+  useEffect(() => {
+    if(user !== null) {
+      setFormData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        birthDate: moment(user.birthDate).format('YYYY-MM-DD'),
+        email: user.email,
+        contactNumber: user.contactNumber,
+        address: user.address,
+        joinDate: moment(user.joiningDate).format('YYYY-MM-DD'),
+        approvalStatus: user.approvalStatus || 'approved',
+        driverLicence: user.driverLicence,
+        validUntil: user.validUntil,
+        carNumber: user.carNumber,
+        carModel: user.carModel
+      });
+      setLastUpdated(user.updatedAt);
     }
-  };
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -85,23 +92,26 @@ const ProfilePage = ({ userData }) => {
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item active>Profile</Breadcrumb.Item>
           </Breadcrumb>
-          <h4>My Profile</h4>
-          <p className="mb-0">Your important information.</p>
-        </div>
-        </Row>
-        <div className="d-flex justify-content-end flex-wrap text-center mb-2">
+          <div className="d-flex justify-content-between align-items-center">
+              <h4>My Profile
+              <span className='f-12 mt-1 d-block text-gray fw-normal'>Last updated on {moment(lastUpdated).format('dddd')} {moment(lastUpdated).format('Do MMMM, YYYY')}</span>
+              </h4>
+              
+          
           {!editMode && (
-            <Button variant="primary" className="text-dark me-2 dropdown-toggle btn btn-secondary" onClick={toggleEditMode}>
-              <FontAwesomeIcon icon={faEdit} /> Edit
+            <Button variant="white" className="text-dark me-2 dropdown-toggle " onClick={toggleEditMode}>
+              <FontAwesomeIcon icon={faEdit} />
             </Button>
           )}
-        </div>
+          </div>
+          </div>
+        </Row>
 
       <Row>
         <Col xs={12} md={8} className="mt-1">
           <Card border="light" className="bg-white shadow-sm mb-4">
             <Card.Header className='border-bottom'>
-              <h5 className="mb-0">General information</h5>
+              <h5 className="mb-0">Personal details</h5>
             </Card.Header>
             <Card.Body>
               {!editMode ? (
@@ -154,7 +164,7 @@ const ProfilePage = ({ userData }) => {
               ) : (
                 <Form onSubmit={handleSubmit}>
                   <Row>
-                    <Col xs={6} className="mb-3">
+                    <Col xs={12} className="mb-3">
                       <Form.Group id="firstName">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
@@ -166,7 +176,9 @@ const ProfilePage = ({ userData }) => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col xs={6} className="mb-3">
+                    </Row>
+                    <Row>
+                    <Col xs={12} className="mb-3">
                       <Form.Group id="lastName">
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control
@@ -180,7 +192,7 @@ const ProfilePage = ({ userData }) => {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col xs={6}>
+                    <Col xs={12}>
                       <Form.Group id="birthDate">
                         <Form.Label>Date of Birth</Form.Label>
                         <Form.Control
@@ -192,7 +204,9 @@ const ProfilePage = ({ userData }) => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col xs={6}>
+                    </Row>
+                    <Row className="mb-3">
+                    <Col xs={12} >
                       <Form.Group id="email">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
@@ -202,11 +216,12 @@ const ProfilePage = ({ userData }) => {
                           onChange={handleInputChange}
                           required
                         />
+                        <span className='f-12 text-gray fw-light px-1'> *Log in with your updated email on changing it. </span>
                       </Form.Group>
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col xs={6}>
+                    <Col xs={12}>
                       <Form.Group id="contactNumber">
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
@@ -218,7 +233,9 @@ const ProfilePage = ({ userData }) => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col xs={6}>
+                    </Row>
+                    <Row>
+                    <Col xs={12}>
                       <Form.Group id="address">
                         <Form.Label>Address</Form.Label>
                         <Form.Control
@@ -239,12 +256,11 @@ const ProfilePage = ({ userData }) => {
         </Col>
 
         <Col xs={12} md={4} className="mt-1">
-          <Card border="light" className="bg-white shadow-sm mb-4">
+          {!editMode && <Card border="light" className="bg-white shadow-sm mb-4">
             <Card.Header className='border-bottom'>
-              <h5 className="mb-0">Employment information</h5>
+              <h5 className="mb-0">Employment details</h5>
             </Card.Header>
             <Card.Body>
-              {!editMode ? (
                 <>
                   <div className="mb-3">
                     <div id="joinDate">
@@ -259,44 +275,12 @@ const ProfilePage = ({ userData }) => {
                     </div>
                   </div>
                 </>
-              ) : (
-                <Form onSubmit={handleSubmit}>
-                  <Row className="mb-3">
-                    <Col xs={12}>
-                      <Form.Group id="joinDate">
-                        <Form.Label>Join Date</Form.Label>
-                        <Form.Control
-                          type="date"
-                          name="joinDate"
-                          value={formData.joinDate}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row className='mb-3'>
-                    <Col xs={12}>
-                      <Form.Group id="approvalStatus">
-                        <Form.Label>Approval Status</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="approvalStatus"
-                          value={formData.approvalStatus}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Form>
-              )}
             </Card.Body>
-          </Card>
+          </Card> }
 
           <Card className="mb-4">
             <Card.Header className='border-bottom'>
-              <h5 className="mb-0">Driver information</h5>
+              <h5 className="mb-0">License & driver details</h5>
             </Card.Header>
             <Card.Body>
               {!editMode ? (
@@ -397,10 +381,15 @@ const ProfilePage = ({ userData }) => {
 
       {editMode && (
         <Row>
-          <Col xs={12} className="text-center mb-4">
-            <Button variant="primary" onClick={handleSubmit}>
-              <FontAwesomeIcon icon={faSave} className="me-2" /> Save Changes
+          <Col xs={12} className="mb-4">
+          <div className='d-flex justify-content-between'>
+            <Button variant="primary multi-button-display" onClick={handleSubmit}>
+              <FontAwesomeIcon icon={faSave} className="me-2" /> Save
             </Button>
+            <Button variant="outline-danger multi-button-display" onClick={toggleEditMode}>
+               Cancel
+            </Button>
+            </div>
           </Col>
         </Row>
       )}

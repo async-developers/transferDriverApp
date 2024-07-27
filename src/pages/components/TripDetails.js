@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Card } from '@themesberg/react-bootstrap';
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from 'axios';
-import moment from 'moment-timezone';
 import TripInformation from "../subComponents/TripInformation";
 
 const TripDetails = () => {
@@ -13,17 +12,17 @@ const TripDetails = () => {
     const history = useHistory(); // Access to the history object
 
     useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tripDetails?tourId=${id}&bookingId=${bookingId}`);
+                setTripData(response.data[0]); // Assuming response.data contains trip details
+            } catch (error) {
+                console.error('Error fetching trip data:', error);
+            }
+        };
+        
         fetchUserData();
     }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tripDetails?tourId=${id}&bookingId=${bookingId}`);
-            setTripData(response.data[0]); // Assuming response.data contains trip details
-        } catch (error) {
-            console.error('Error fetching trip data:', error);
-        }
-    };
 
     return (
         <>

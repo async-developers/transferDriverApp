@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faPlus, faEdit, faMinus, faExpand, faPlusCircle, faMinusCircle  } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Breadcrumb, Form, Button, Card, Pagination, Modal, ListGroup, Alert, Dropdown } from '@themesberg/react-bootstrap';
+import { faPlusCircle, faMinusCircle  } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, ListGroup } from '@themesberg/react-bootstrap';
 import moment from 'moment-timezone';
 import axios from 'axios';
 
 export default (data) => {
     const [transactions, setTransactions] = useState();
     useEffect(() => {
-        fetchTours();
-      }, [data]);
-    
       const fetchTours = async () => {
         try {
           const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/transactions?driverId=${data.id}`);
@@ -19,6 +16,9 @@ export default (data) => {
           console.error('Error fetching tours:', error);
         }
       };
+
+      fetchTours();
+    }, [data]);
 
   return (
     <>
