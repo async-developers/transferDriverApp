@@ -5,13 +5,13 @@ import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
-
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 import Profile1 from "../assets/img/team/profile-picture-1.jpg";
 import ProfileCover from "../assets/img/profile-cover.jpg";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
+
 
 export const ProfileCardWidget = () => {
   return (
@@ -113,7 +113,7 @@ export const OngoingTripsWidget = (props) => {
 };
 
 export const CounterWidget = (props) => {
-  const { tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
+  const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
 
   const handleStartTrip = async () => {
     try {
@@ -127,11 +127,11 @@ export const CounterWidget = (props) => {
   };
 
   return (
-    <Card border="light" className="shadow-sm upperCase-keyword">
+    <Card border="light" className={`shadow-sm upperCase-keyword ${additionalClass}`}>
       <Card.Header className="py-3 px-3">
         <span className="mb-1 tour-title">{title}</span>
       </Card.Header>
-      <Card.Body className="py-2 px-3">
+      <Card.Body className="py-3 px-3">
               <div className="d-flex justify-space-between align-items-center">
               <div>
                 <span className="fw-bold upperCase-keyword text-success">
