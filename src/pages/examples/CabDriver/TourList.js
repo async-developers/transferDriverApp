@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Row, Card, Button, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
+import { Card, Button, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
 import { faClipboardList} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
 import moment from 'moment-timezone';
@@ -94,8 +94,7 @@ const TourList = ({ data }) => {
       <Card border="light" className="table-wrapper table-responsive shadow-sm">
         <Card.Body className="pb-0">
               {tours.length === 0 ? (
-                  <p>
-                    No data found.</p>
+                  <p> No data found.</p>
               ) : (
                 tours.map((tour) => (
                   <Card key={tour.tourId} className="mb-3">
@@ -138,7 +137,7 @@ const TourList = ({ data }) => {
         <Card.Footer className="d-flex justify-content-center">
           <Pagination>
             <Pagination.Prev onClick={prevPage} disabled={currentPage === 1}> Previous </Pagination.Prev>
-            <Pagination.Next onClick={nextPage} disabled={currentPage === totalPages}> Next </Pagination.Next>
+            <Pagination.Next onClick={nextPage} disabled={tours.length === 0 || currentPage === totalPages}> Next </Pagination.Next>
           </Pagination>
         </Card.Footer>
       </Card>

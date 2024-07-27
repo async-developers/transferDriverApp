@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faLocationArrow, faMapMarkerAlt, faCalendarAlt, faPhone, faPersonBooth, faUser, faUsers, faNotesMedical, faInfo, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faLocationArrow, faMapMarkerAlt, faCalendarAlt, faPhone, faUser, faUsers, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Card } from '@themesberg/react-bootstrap';
 import { ListGroup } from '@themesberg/react-bootstrap';
 import moment from 'moment-timezone';

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col, Table, Card, Pagination, Dropdown, Button } from '@themesberg/react-bootstrap';
-import { faCar, faEdit, faTrashAlt, faEye, faExpand, faMinus, faCarAlt, faCarCrash, faTaxi} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
+import { Card, Pagination } from '@themesberg/react-bootstrap';
+import { faTaxi} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
-import moment from 'moment-timezone';
-import { CabHistoryWidget, CounterWidget } from '../../../../components/Widgets';
+import { CabHistoryWidget } from '../../../../components/Widgets';
 
 const TourListHistory = ({data}) => {
   const [tours, setTours] = useState([]);
@@ -12,18 +10,18 @@ const TourListHistory = ({data}) => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
+        setTours(response.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error('Error fetching tours:', error);
+      }
+    };
+    
     fetchTours();
   }, [currentPage]);
-
-  const fetchTours = async () => {
-    try {
-      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
-      setTours(response.data);
-      setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.error('Error fetching tours:', error);
-    }
-  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -33,7 +31,7 @@ const TourListHistory = ({data}) => {
     <div>
       <Card border="light" className="table-wrapper table-responsive shadow-sm mb-3">
         <Card.Body>
-            {tours.length == 0 ? (
+            {tours.length === 0 ? (
               <p>
                   No data found.
                   </p>
@@ -59,7 +57,7 @@ const TourListHistory = ({data}) => {
       <div className="d-flex justify-content-center">
       <Pagination>
           <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} >Previous</Pagination.Prev>
-          <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} >Next</Pagination.Next>
+          <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={tours.length === 0 || currentPage === totalPages} >Next</Pagination.Next>
         </Pagination>
       </div>
       </Card>

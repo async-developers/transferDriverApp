@@ -10,19 +10,19 @@ const TourListings = ({data}) => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
+        console.log(response.data)
+        setTours(response.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error('Error fetching tours:', error);
+      }
+    };
+    
     fetchTours();
   }, [currentPage]);
-
-  const fetchTours = async () => {
-    try {
-      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
-      console.log(response.data)
-      setTours(response.data);
-      setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.error('Error fetching tours:', error);
-    }
-  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -30,7 +30,7 @@ const TourListings = ({data}) => {
 
   return (
         <>
-            {tours.length == 0 ? (
+            {tours.length === 0 ? (
                 <>
                     <p>No data found.</p>
                 </>

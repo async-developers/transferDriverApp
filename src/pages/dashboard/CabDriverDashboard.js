@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Col, Row, Card, Image, Button } from '@themesberg/react-bootstrap';
-import { CounterWidget, OngoingTripsWidget, SalesValueWidget } from '../../components/Widgets';
-import { faCar, faRoute, faMoneyBillAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Image, Button } from '@themesberg/react-bootstrap';
+import { CounterWidget, OngoingTripsWidget } from '../../components/Widgets';
+import { faAngleRight, faCar } from '@fortawesome/free-solid-svg-icons';
 import Profile from "../../assets/img/driver/a95297b322004db9.svg";
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import TourListHistory from '../examples/CabDriver/TourHistory/TourListHistory';
 import TourListings from '../examples/CabDriver/TourHistory/TourListings';
 import { Link, Redirect } from 'react-router-dom';
 import { Routes } from '../../routes';
@@ -30,39 +29,39 @@ const CabDriverDashboard = ({ data }) => {
   });
 
   useEffect(() => {
+    const fetchDriverAnalytics = async () => {
+      try {
+        const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/driverAnalytics?driverId=${data.id}`);
+        setAnalyticsData(response.data);
+        const upcomingTrip = findNextTrip(response.data.upcomingTrips);
+  
+        setNextTrip({
+          ...upcomingTrip,
+          tourTime: moment(`${upcomingTrip.tourDate} ${upcomingTrip.tourTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
+        });
+  
+        const interval = setInterval(() => {
+          setNextTrip(currentTrip => {
+            if (!currentTrip) return null;
+            const momentTime = moment(currentTrip.tourTime);
+            momentTime.subtract(1, 'seconds');
+            const formattedTime = momentTime.toISOString();
+            return { ...currentTrip, tourTime: formattedTime };
+          });
+        }, 1000);
+  
+        setLoading(false); // Set loading to false after data is fetched
+        return () => clearInterval(interval);
+      } catch (error) {
+        console.error('Error fetching driver analytics:', error);
+        setLoading(false); // Ensure loading state is false even on error
+      }
+    };
+
     setUserName(data.username);
     setUserId(data.id);
     fetchDriverAnalytics();
   }, [data]);
-
-  const fetchDriverAnalytics = async () => {
-    try {
-      const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/driverAnalytics?driverId=${data.id}`);
-      setAnalyticsData(response.data);
-      const upcomingTrip = findNextTrip(response.data.upcomingTrips);
-
-      setNextTrip({
-        ...upcomingTrip,
-        tourTime: moment(`${upcomingTrip.tourDate} ${upcomingTrip.tourTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
-      });
-
-      const interval = setInterval(() => {
-        setNextTrip(currentTrip => {
-          if (!currentTrip) return null;
-          const momentTime = moment(currentTrip.tourTime);
-          momentTime.subtract(1, 'seconds');
-          const formattedTime = momentTime.toISOString();
-          return { ...currentTrip, tourTime: formattedTime };
-        });
-      }, 1000);
-
-      setLoading(false); // Set loading to false after data is fetched
-      return () => clearInterval(interval);
-    } catch (error) {
-      console.error('Error fetching driver analytics:', error);
-      setLoading(false); // Ensure loading state is false even on error
-    }
-  };
 
   const findNextTrip = (trips) => {
     if (!trips || trips.length === 0) return null;
@@ -87,8 +86,8 @@ const CabDriverDashboard = ({ data }) => {
       <Row>
         <Col md={12}>
           <div className="py-4">
-            <h3 className="text-uppercase">Welcome back, {userName}</h3>
-            <span>Track your trips activity, rides and bookings.</span>
+            <h3> Welcome {userName}</h3>
+            <span>Track your trips activity, rides and rewards.</span>
           </div>
           <div className="py-4">
             <h3 className='mb-3'>On Going Trip</h3>
@@ -96,7 +95,7 @@ const CabDriverDashboard = ({ data }) => {
               <div className='image-banner'>
                 <Image src={Profile} className="" />
               </div>
-              <div className='custom-card-details py-4 px-4'>
+              <div className='custom-card-details py-2 px-2'>
                 {analyticsData.onGoingTrips !== null ? (
                   <OngoingTripsWidget
                     driverId={userId}
@@ -121,10 +120,10 @@ const CabDriverDashboard = ({ data }) => {
           <Row className="d-flex justify-content-md-center">
             <Col xs={12} sm={6} lg={3} className="justify-content-md-center">
               <div className='mb-2 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4'>
-                <h5 className='mb-0 upperCase-keyword'>upcoming trip</h5>
-                <Link to="/upcoming-tours">
-                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails}>
-                    <FontAwesomeIcon icon={faPlus} /> All trips
+                <h5 className='mb-0 upperCase-keyword'>upcoming trips</h5>
+                <Link to="/upcoming-tours" className={analyticsData.upcomingTrips === null && "disable"}>
+                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails} disabled={analyticsData.upcomingTrips === null}>
+                     <span className='space-after'>All trips </span> <FontAwesomeIcon icon={faAngleRight} />
                   </Button>
                 </Link>
               </div>
@@ -153,10 +152,10 @@ const CabDriverDashboard = ({ data }) => {
           <Row className="d-flex justify-content-md-center">
             <Col xs={12} sm={6} lg={3} className="justify-content-md-center">
               <div className='mb-2 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4'>
-                <h5 className='mb-0 upperCase-keyword'>past</h5>
-                <Link to={`/tours-history`}>
-                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails}>
-                    <FontAwesomeIcon icon={faPlus} /> All trips
+                <h5 className='mb-0 upperCase-keyword'>past trips</h5>
+                <Link to={`/tours-history`} className={analyticsData.recentTrips===0 && "disable"}>
+                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails} disabled={analyticsData.recentTrips === 0}>
+                     <span className='space-after'>All trips </span> <FontAwesomeIcon icon={faAngleRight} />
                   </Button>
                 </Link>
               </div>
