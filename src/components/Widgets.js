@@ -1,9 +1,9 @@
 
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faClipboardList, faLocationArrow, faMapMarkerAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faLocationArrow, faMapMarkerAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
-import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge, Toast } from '@themesberg/react-bootstrap';
+import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge, Alert } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import Profile1 from "../assets/img/team/profile-picture-1.jpg";
@@ -128,7 +128,7 @@ export const OngoingTripsWidget = (props) => {
 };
 
 export const CounterWidget = (props) => {
-  const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
+  const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint } = props;
   const [error, setError] = useState(null);
 
   const handleStartTrip = async () => {
@@ -204,11 +204,12 @@ export const CounterWidget = (props) => {
 };
 
 export const CabHistoryWidget = (props) => {
-  const { tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, fare, icon, status, iconColor } = props;
-  console.log(title)
+  const { tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, fare, status } = props;
   const [expenseType, setExpenseType] = useState('');
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [expenseAmount, setExpenseAmount] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleExpenseTypeChange = (e) => {
     setExpenseType(e.target.value);
@@ -220,14 +221,21 @@ export const CabHistoryWidget = (props) => {
 
   const handleAddExpenseSubmit = async () => {
     try {
-      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/addExpense/${bookingId}`, {
+      const response = await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/addExpense/${bookingId}`, {
         expenseAmount,
         expenseType
       });
-      setShowAddExpenseModal(false);
+      
+      if (response.status === 200 || response.status === 201) {
+        setSuccess(`Expense amount  RM${expenseAmount} of ${expenseType} added successfully`);
+      } else {
+        setError('Unable to add expense. Please try again later.');
+      }
+      // setShowAddExpenseModal(false);
       // fetchTours(); // Refresh tour list after adding expense
     } catch (error) {
       console.error('Error adding expense:', error);
+      setError('Unable to add expense');
     }
   };
 
@@ -273,8 +281,8 @@ export const CabHistoryWidget = (props) => {
           </div>
         </div>
         <div className="d-flex justify-content-between mt-1">
-          <span className="card-subtitle">{status}</span>
-          <span className="card-subtitle fw-bold">RM {fare}</span>
+          <span className="card-subtitle fw-bold">{status}</span>
+          {status !== 'cancelled' && <span className="card-subtitle fw-bold">RM {fare}</span>}
         </div>
 
         <div className="mt-3 ">
@@ -299,6 +307,8 @@ export const CabHistoryWidget = (props) => {
           <Button variant="close" aria-label="Close" onClick={handleCloseAddExpenseModal} />
         </Modal.Header>
         <Modal.Body>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
           <Form.Group className="mb-3">
             <Form.Label>Expense Type</Form.Label>
             <Form.Select value={expenseType} onChange={handleExpenseTypeChange}>
@@ -359,7 +369,7 @@ export const ToursWidgetWithoutIcon = (props) => {
 };
 
 export const upcomingToursCard = (props) => {
-  const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
+  const { bookingId, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
 
   const handleStartTrip = async () => {
     try {
