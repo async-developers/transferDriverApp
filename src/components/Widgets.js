@@ -147,12 +147,12 @@ export const CounterWidget = (props) => {
                 </p>
             </div>
         </div>
-          <div className="dashed-line">
+          <div className="dashed-line text-center">
             <span className="timeDetails upperCase-keyword text-danger">
               {moment(pickUpDate).format('Do MMMM')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
             </span>
           </div>
-          <div className="d-flex justify-content-start mt-2">
+          <div className="d-flex justify-content-start mt-3">
             <span className="circle-svg">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
             </span>
