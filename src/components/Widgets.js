@@ -83,16 +83,31 @@ export const OngoingTripsWidget = (props) => {
       <Col xl={5} md={12} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-xl-0">
         <div>
           <span className="d-block mb-2 tour-title">{title}</span>
-          <div className="small dashed-before">
-            <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
-            <small className="mx-2">{pickUpPoint}</small>
-          </div>
-          <div className="small">
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
+          <div className="location-wrapper">
 
-            <small className="mx-2">{dropPoint}</small>
+            <div className="d-flex justify-content-start mt-2">
+              <div>
+                <span className="circle-svg">
+                  <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
+                </span>
+              </div>
+              <div className="px-2">
+                <p className="f-12">
+                  {pickUpPoint}
+                </p>
+              </div>
+            </div>
+            <div className="d-flex justify-content-start mt-3">
+              <span className="circle-svg">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
+              </span>
+              <div className="px-2">
+                <p className="f-12">
+                  {dropPoint}
+                </p>
+              </div>
+            </div>
           </div>
-
           <div className="mt-3 ">
             <Link to={`/trip-details/${bookingId}/${tourId}`}>
               <Button variant="outline-primary" className="upperCase-keyword detail-button d-flex justify-content-between">
@@ -135,18 +150,18 @@ export const CounterWidget = (props) => {
       </Card.Header>
       <Card.Body className="py-3 px-3">
         <div className="location-wrapper">
-        <div className="d-flex justify-content-start mt-2">
-          <div>
-            <span className="circle-svg">
-              <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
-            </span>
-          </div>
-            <div className="px-2">
-                <p className="f-12">
-                    {pickUpPoint}
-                </p>
+          <div className="d-flex justify-content-start mt-2">
+            <div>
+              <span className="circle-svg">
+                <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
+              </span>
             </div>
-        </div>
+            <div className="px-2">
+              <p className="f-12">
+                {pickUpPoint}
+              </p>
+            </div>
+          </div>
           <div className="dashed-line text-center">
             <span className="timeDetails upperCase-keyword text-danger">
               {moment(pickUpDate).format('Do MMMM')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
@@ -157,11 +172,11 @@ export const CounterWidget = (props) => {
               <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
             </span>
             <div className="px-2">
-                <p className="f-12">
-                    {dropPoint}
-                </p>
+              <p className="f-12">
+                {dropPoint}
+              </p>
             </div>
-        </div>
+          </div>
         </div>
         <div>
           <span className="card-subtitle">{status}</span>
