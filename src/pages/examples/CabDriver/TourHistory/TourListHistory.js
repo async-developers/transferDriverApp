@@ -29,8 +29,6 @@ const TourListHistory = ({data}) => {
 
   return (
     <div>
-      <Card border="light" className="table-wrapper table-responsive shadow-sm mb-3">
-        <Card.Body>
             {tours.length === 0 ? (
               <p>
                   No data found.
@@ -51,16 +49,14 @@ const TourListHistory = ({data}) => {
           iconColor="shape-secondary"
           detailsButtonEnabled="false"
         />
-              ))}
-        </Card.Body>
+        ))}
       {/* Pagination */}
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center mt-4">
       <Pagination>
           <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} >Previous</Pagination.Prev>
           <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={tours.length === 0 || currentPage === totalPages} >Next</Pagination.Next>
         </Pagination>
       </div>
-      </Card>
     </div>
   );
 };

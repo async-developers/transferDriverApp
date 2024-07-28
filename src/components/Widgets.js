@@ -178,9 +178,6 @@ export const CounterWidget = (props) => {
             </div>
           </div>
         </div>
-        <div>
-          <span className="card-subtitle">{status}</span>
-        </div>
         {/* Display error message if there is an error */}
         {error && (
           <div className="text-danger mt-2 fs-12">
@@ -241,49 +238,60 @@ export const CabHistoryWidget = (props) => {
 
   return (
     <>
-      <Card border="light" className="shadow-sm upperCase-keyword">
-        <Card.Body>
-          <Row className="d-block">
-            <div className="mb-xl-0">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className={`icon icon-shape icon-md icon-${iconColor} rounded me-4 me-sm-0 `}>
-                  <FontAwesomeIcon icon={icon} className="taxi-color-size" />
-                </div>
-                <div className="">
-                  <Badge bg={`${status === 'Busy' ? 'danger' : status === 'pending' ? 'warning' : 'tertiary'}`} variant="primary" size="sm" className="me-2 card-subtitle badge-lg px-2 upperCase-keyword">{status === "pending" ? "cancelled" : "completed"}</Badge>
-                </div>
-              </div>
-              <div className="no-overflow">
-                <h5 className="mb-2 word-elipsis">{title}</h5>
-                <div className="no-overflow">
-                  <span className="card-subtitle">{moment(pickUpDate).format('Do MMMM, YYYY')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}</span>
-                </div>
-                <div className="small">
-                  <span className="fw-bold text-success">Pickup: </span>
-                  <small>{pickUpPoint}</small>
-                </div>
-                <div className="small">
-                  <span className="fw-bold text-warning">Drop: </span>
-                  <small>{dropPoint}</small>
-                </div>
-                <div>
-                  <span className="card-subtitle fw-bold">RM {fare}</span>
-                </div>
-              </div>
+      <Card border="light" className={`shadow-sm upperCase-keyword`}>
+      <Card.Header className="py-3 px-3">
+        <span className="mb-1 tour-title">{title}</span>
+      </Card.Header>
+      <Card.Body className="py-3 px-3">
+        <div className="location-wrapper">
+          <div className="d-flex justify-content-start mt-2">
+            <div>
+              <span className="circle-svg">
+                <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
+              </span>
             </div>
-          </Row>
-          <div className="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mt-2">
-            <Link to={`/trip-end-details/${bookingId}/${tourId}`}>
-              <Button variant="primary" size="sm" className="me-2 upperCase-keyword">
-                <FontAwesomeIcon icon={faClipboardList} className="me-2" />details
-              </Button>
-            </Link>
-            <Button variant="warning" size="sm" className="me-2 upperCase-keyword" onClick={() => handleAddExpense()}>
-              <FontAwesomeIcon icon={faPlus} className="me-2" />expense
-            </Button>
+            <div className="px-2">
+              <p className="f-12">
+                {pickUpPoint}
+              </p>
+            </div>
           </div>
-        </Card.Body>
-      </Card>
+          <div className="dashed-line text-center">
+            <span className="timeDetails upperCase-keyword text-danger">
+              {moment(pickUpDate).format('Do MMMM')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
+            </span>
+          </div>
+          <div className="d-flex justify-content-start mt-3">
+            <span className="circle-svg">
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
+            </span>
+            <div className="px-2">
+              <p className="f-12">
+                {dropPoint}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="d-flex justify-content-between mt-1">
+          <span className="card-subtitle">{status}</span>
+          <span className="card-subtitle fw-bold">RM {fare}</span>
+        </div>
+
+        <div className="mt-3 ">
+          <Link to={`/trip-details/${bookingId}/${tourId}`}>
+            <Button variant="outline-primary" className="upperCase-keyword detail-button d-flex justify-content-between">
+              <span><FontAwesomeIcon icon={faEye} className="me-2" />view details </span>
+              <span> <FontAwesomeIcon icon={faAngleRight} className="text-danger" /> </span>
+            </Button>
+          </Link>
+        </div>
+        <div className="mt-2 text-center">
+          <Button variant="warning" className="upperCase-keyword detail-button" onClick={handleAddExpense} >
+            <span> Add expense </span>
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
       {/* Add Expense Modal */}
       <Modal as={Modal.Dialog} centered show={showAddExpenseModal} onHide={handleCloseAddExpenseModal} dialogClassName="drawer-modal">
         <Modal.Header>
