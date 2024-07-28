@@ -13,7 +13,6 @@ const TourListings = ({data}) => {
     const fetchTours = async () => {
       try {
         const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchPastAssignedTours?driverId=${data.id}&page=${currentPage}`);
-        console.log(response.data)
         setTours(response.data);
         setTotalPages(response.data.totalPages);
       } catch (error) {
@@ -22,7 +21,7 @@ const TourListings = ({data}) => {
     };
     
     fetchTours();
-  }, [currentPage]);
+  }, [currentPage, data.id]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

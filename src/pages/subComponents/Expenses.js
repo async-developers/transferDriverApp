@@ -5,9 +5,6 @@ import axios from 'axios';
 export default (data) => {
     const [expenses, setExpenses] = useState();
     useEffect(() => {
-        fetchExpenses();
-      }, [data]);
-    
       const fetchExpenses = async () => {
         try {
           const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/expenses?driverId=${data.id}`);
@@ -23,6 +20,9 @@ export default (data) => {
           console.error('Error fetching tours:', error);
         }
       };
+
+      fetchExpenses();
+    }, [data]);
 
   return (
     <>

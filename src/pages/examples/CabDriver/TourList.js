@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, Button, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
+import { Button, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
 import axios from 'axios';
-import moment from 'moment-timezone';
 import TripInformation from '../../subComponents/TripInformation';
-import { faArrowAltCircleDown, faEye } from '@fortawesome/free-regular-svg-icons';
-import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faClipboardList, faLocationArrow, faMapMarkerAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CounterWidget } from '../../../components/Widgets';
 
 const TourList = ({ data }) => {

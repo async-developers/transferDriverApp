@@ -22,7 +22,7 @@ const TripDetails = () => {
         };
         
         fetchUserData();
-    }, []);
+    }, [id, bookingId]);
 
     return (
         <>

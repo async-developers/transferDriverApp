@@ -13,21 +13,20 @@ export default () => {
     const [expenseAmount, setExpenseAmount] = useState(null);
     const { bookingId, id } = useParams();
     useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tripEndDetails?tourId=${id}&bookingId=${bookingId}`);
+                setTripData(response.data.fetchedTrips[0]); // Assuming response.data contains user details
+                setExpensesData(response.data.fetchedExpensesTrips); // Assuming response.data contains user details
+                setExpenseAmount(response.data.fetchedExpensesTrips.reduce((total, item) => total + parseFloat(item.amount), 0))
+    
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
         fetchUserData();
-    }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tripEndDetails?tourId=${id}&bookingId=${bookingId}`);
-            setTripData(response.data.fetchedTrips[0]); // Assuming response.data contains user details
-            setExpensesData(response.data.fetchedExpensesTrips); // Assuming response.data contains user details
-            setExpenseAmount(response.data.fetchedExpensesTrips.reduce((total, item) => total + parseFloat(item.amount), 0))
-
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
-
+    }, [id, bookingId]);
 
     return (
         <>

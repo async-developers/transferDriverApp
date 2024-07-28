@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Pagination } from '@themesberg/react-bootstrap';
+import { Pagination } from '@themesberg/react-bootstrap';
 import { faTaxi} from '@fortawesome/free-solid-svg-icons'; // Import faEye icon
 import axios from 'axios';
 import { CabHistoryWidget } from '../../../../components/Widgets';
@@ -21,7 +21,7 @@ const TourListHistory = ({data}) => {
     };
     
     fetchTours();
-  }, [currentPage]);
+  }, [currentPage, data.id]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
