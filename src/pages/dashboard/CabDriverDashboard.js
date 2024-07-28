@@ -95,7 +95,7 @@ const CabDriverDashboard = ({ data }) => {
               <div className='image-banner'>
                 <Image src={Profile} className="" />
               </div>
-              <div className='custom-card-details py-2 px-2'>
+              <div className='custom-card-details py-4 px-4'>
                 {analyticsData.onGoingTrips !== null ? (
                   <OngoingTripsWidget
                     driverId={userId}
