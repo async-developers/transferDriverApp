@@ -153,8 +153,8 @@ const CabDriverDashboard = ({ data }) => {
             <Col xs={12} sm={6} lg={3} className="justify-content-md-center">
               <div className='mb-2 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4'>
                 <h5 className='mb-0 upperCase-keyword'>past trips</h5>
-                <Link to={`/tours-history`} className={analyticsData.recentTrips===0 && "disable"}>
-                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails} disabled={analyticsData.recentTrips === 0}>
+                <Link to={`/tours-history`} className={analyticsData.totalCompletedTours===0 && "disable"}>
+                  <Button variant="outline-primary" size="sm" className="m-1 upperCase-keyword" onClick={getTripDetails} disabled={analyticsData.totalCompletedTours === 0}>
                      <span className='space-after'>All trips </span> <FontAwesomeIcon icon={faAngleRight} />
                   </Button>
                 </Link>
