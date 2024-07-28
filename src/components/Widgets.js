@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faPlus, faClipboardList, faLocationArrow, faMapMarkerAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
-import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge } from '@themesberg/react-bootstrap';
+import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge, Toast } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import Profile1 from "../assets/img/team/profile-picture-1.jpg";
@@ -84,28 +84,28 @@ export const OngoingTripsWidget = (props) => {
         <div>
           <span className="d-block mb-2 tour-title">{title}</span>
           <div className="small dashed-before">
-          <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
+            <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
             <small className="mx-2">{pickUpPoint}</small>
           </div>
           <div className="small">
-          <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
 
             <small className="mx-2">{dropPoint}</small>
           </div>
 
           <div className="mt-3 ">
-          <Link to={`/trip-details/${bookingId}/${tourId}`}>
-            <Button variant="outline-primary" className="upperCase-keyword detail-button d-flex justify-content-between">
-              <span><FontAwesomeIcon icon={faEye} className="me-2" />view details </span>
-              <span> <FontAwesomeIcon icon={faAngleRight} className="text-danger"/> </span>
+            <Link to={`/trip-details/${bookingId}/${tourId}`}>
+              <Button variant="outline-primary" className="upperCase-keyword detail-button d-flex justify-content-between">
+                <span><FontAwesomeIcon icon={faEye} className="me-2" />view details </span>
+                <span> <FontAwesomeIcon icon={faAngleRight} className="text-danger" /> </span>
+              </Button>
+            </Link>
+          </div>
+          <div className="mt-2 text-center">
+            <Button variant="warning" className="upperCase-keyword detail-button" onClick={handleEndTrip}>
+              <span className="fw-bold"> end trip </span>
             </Button>
-          </Link>
-        </div>
-        <div className="mt-2 text-center">
-          <Button variant="warning" className="upperCase-keyword detail-button"  onClick={handleEndTrip}>
-            <span className="fw-bold"> end trip </span>
-          </Button>
-        </div>
+          </div>
         </div>
       </Col>
     </Row>
@@ -114,15 +114,17 @@ export const OngoingTripsWidget = (props) => {
 
 export const CounterWidget = (props) => {
   const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
+  const [error, setError] = useState(null);
 
   const handleStartTrip = async () => {
     try {
-      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/status`, {
+      const response = await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/status`, {
         status: "inProgress"
       });
+      console.log(response)
     }
     catch (err) {
-      console.error('Error starting trip:', err);
+      console.log(err)
     }
   };
 
@@ -132,34 +134,50 @@ export const CounterWidget = (props) => {
         <span className="mb-1 tour-title">{title}</span>
       </Card.Header>
       <Card.Body className="py-3 px-3">
-              <div className="d-flex justify-space-between align-items-center">
-              <div>
-                <span className="fw-bold upperCase-keyword text-success">
-                  <small>{pickUpPoint}</small>
-                </span>
-              </div>
-              <div className="dashed-line">
-                <span className="timeDetails upperCase-keyword text-danger">
-                  {moment(pickUpDate).format('Do MMMM')} 
-                  <br />
-                  {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
-                </span>
-              </div>
-              <div className="small">
-              <span className="fw-bold upperCase-keyword text-warning">
-                <small>{dropPoint}</small>
-                </span>
-              </div>
-              </div>
-              <div>
-                <span className="card-subtitle">{status}</span>
-              </div>
+        <div className="location-wrapper">
+        <div className="d-flex justify-content-start mt-2">
+          <div>
+            <span className="circle-svg">
+              <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
+            </span>
+          </div>
+            <div className="px-2">
+                <p className="f-12">
+                    {pickUpPoint}
+                </p>
+            </div>
+        </div>
+          <div className="dashed-line">
+            <span className="timeDetails upperCase-keyword text-danger">
+              {moment(pickUpDate).format('Do MMMM')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
+            </span>
+          </div>
+          <div className="d-flex justify-content-start mt-2">
+            <span className="circle-svg">
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
+            </span>
+            <div className="px-2">
+                <p className="f-12">
+                    {dropPoint}
+                </p>
+            </div>
+        </div>
+        </div>
+        <div>
+          <span className="card-subtitle">{status}</span>
+        </div>
+        {/* Display error message if there is an error */}
+        {error && (
+          <div className="text-danger mt-2 fs-12">
+            {error}
+          </div>
+        )}
 
         <div className="mt-3 ">
           <Link to={`/trip-details/${bookingId}/${tourId}`}>
             <Button variant="outline-primary" className="upperCase-keyword detail-button d-flex justify-content-between">
               <span><FontAwesomeIcon icon={faEye} className="me-2" />view details </span>
-              <span> <FontAwesomeIcon icon={faAngleRight} className="text-danger"/> </span>
+              <span> <FontAwesomeIcon icon={faAngleRight} className="text-danger" /> </span>
             </Button>
           </Link>
         </div>
@@ -314,6 +332,48 @@ export const ToursWidgetWithoutIcon = (props) => {
     </Row>
     //   </Card.Body>
     // </Card>
+  );
+};
+
+export const upcomingToursCard = (props) => {
+  const { additionalClass, tourId, bookingId, title, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
+
+  const handleStartTrip = async () => {
+    try {
+      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/status`, {
+        status: "inProgress"
+      });
+    }
+    catch (err) {
+      console.error('Error starting trip:', err);
+    }
+  };
+
+  return (
+    <>
+      <div className="d-flex justify-space-between align-items-center">
+        <div>
+          <span className="fw-bold upperCase-keyword text-success">
+            <small>{pickUpPoint}</small>
+          </span>
+        </div>
+        <div className="dashed-line">
+          <span className="timeDetails upperCase-keyword text-danger">
+            {moment(pickUpDate).format('Do MMMM')}
+            <br />
+            {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
+          </span>
+        </div>
+        <div className="small">
+          <span className="fw-bold upperCase-keyword text-warning">
+            <small>{dropPoint}</small>
+          </span>
+        </div>
+      </div>
+      <div>
+        <span className="card-subtitle">{status}</span>
+      </div>
+    </>
   );
 };
 
