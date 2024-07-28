@@ -275,7 +275,6 @@
   padding: 5px 10px;
   white-space: pre;
   font-size: 8px;
-  display: block;
   margin-left: 22px;
   font-weight: 600;
 }
@@ -298,7 +297,7 @@
 .location-wrapper::before {
   content: '';
   position: absolute;
-  border: 2px dashed #ccc;
+  border: 1px dashed #ccc;
   height: 80%;
   top: 0;
   left: 0;
