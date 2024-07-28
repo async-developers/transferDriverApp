@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table, Button, Card, Modal, Form, Pagination } from '@themesberg/react-bootstrap';
-import { faPlus, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import moment from 'moment-timezone';
 
@@ -83,7 +83,7 @@ const TourExpensesList = ({data}) => {
               </tr>
             </thead>
             <tbody>
-            {tours.length == 0 ? (
+            {tours.length === 0 ? (
                 <tr>
                 <td colSpan="9" className="text-center my-4 no-bottom-border">
                   No data found.

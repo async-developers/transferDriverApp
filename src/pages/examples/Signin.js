@@ -5,7 +5,6 @@ import { faEnvelope, faUnlockAlt } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Form, Container, InputGroup, Button, Spinner } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import { Routes } from '../../routes';
-import BgImage from '../../assets/img/illustrations/signin.svg';
 
 export class Signin extends Component {
   constructor() {
@@ -64,7 +63,7 @@ export class Signin extends Component {
   }
 
   render() {
-    const { email, password, userRole, loading, incorrectCredentials } = this.state;
+    const { email, password, loading, incorrectCredentials } = this.state;
 
     return (
       <main>

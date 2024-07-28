@@ -17,7 +17,7 @@ export default (data) => {
               return item;
             }
           }).filter(x => x);
-          setExpenses(updatedData)
+          setExpenses(updatedData);
 
         } catch (error) {
           console.error('Error fetching tours:', error);

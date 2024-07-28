@@ -18,7 +18,6 @@ import RouteWithSidebar from '../RoutesWithSidebar';
 import CabDriverUpcomingTours from './examples/CabDriver/CabDriverUpcomingTours';
 import TourHistory from './examples/CabDriver/TourHistory/TourHistory';
 import DashboardOverview from './dashboard/DashboardOverview';
-import TourExpenses from './examples/CabDriver/TourExpenses/TourExpenses';
 import TripDetails from './components/TripDetails';
 import PostTripDetails from './components/PostTripDetails';
 import Wallet from './Wallet';

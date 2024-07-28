@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import Datetime from 'react-datetime';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faEnvelope, faPersonBooth, faUnlockAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faPersonBooth, faUnlockAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Form, Card, Button, Container, InputGroup, Spinner, Alert } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 import BgImage from '../../assets/img/illustrations/signin.svg';
@@ -34,7 +34,17 @@ export class DriverSignUpPage extends Component {
     this.changeBirthDate = this.changeBirthDate.bind(this);
     this.changeJoiningDate = this.changeJoiningDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.scrollRef = React.createRef();
+    this.scrollToMessageAfterSubmitForm = this.scrollToMessageAfterSubmitForm.bind(this);
   }
+
+  scrollToMessageAfterSubmitForm = () => {
+    window.scrollTo({
+      behavior: "smooth",
+      top: this.scrollRef.current
+    });
+  };
+  
 
   handleInputChange(e) {
     const { name, value } = e.target;
@@ -51,15 +61,25 @@ export class DriverSignUpPage extends Component {
 
   async onSubmit(e) {
     e.preventDefault();
-    const { confirmPassword, password } = this.state;
+    const { confirmPassword, password, birthday, joinedDate } = this.state;
 
     if (password !== confirmPassword) {
+      this.scrollToMessageAfterSubmitForm();
+
       this.setState({ error: 'Passwords do not match.' });
       return;
     }
 
     if (password.length < 8) {
+      this.scrollToMessageAfterSubmitForm();
       this.setState({ error: 'Password should be at least 8 characters long.' });
+      return;
+    }
+
+    if(birthday=== '' || joinedDate === '') {
+      this.scrollToMessageAfterSubmitForm();
+      const errorMsg = birthday === '' ? 'Enter your birth date' : 'Enter your joining date';
+      this.setState({ error: errorMsg });
       return;
     }
 
@@ -73,6 +93,7 @@ export class DriverSignUpPage extends Component {
       } else {
         this.setState({ error: 'Failed to signup.', loading: false });
       }
+      this.scrollToMessageAfterSubmitForm();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         this.setState({ error: error.response.data.message });
@@ -80,6 +101,7 @@ export class DriverSignUpPage extends Component {
         this.setState({ error: 'An error occurred. Please try again later.' });
       }
       this.setState({ loading: false });
+      this.scrollToMessageAfterSubmitForm();
     }
   }
 
@@ -96,10 +118,10 @@ export class DriverSignUpPage extends Component {
                   <div className="text-center text-md-center mb-4 mt-md-0">
                     <h3 className="mb-0">Create an account</h3>
                   </div>
-                  {error && <Alert variant="danger">{error}</Alert>}
-                  {success && <Alert variant="success">{success}</Alert>}
+                  {error && <Alert ref={this.scrollRef} variant="danger">{error}</Alert>}
+                  {success && <Alert ref={this.scrollRef} variant="success">{success}</Alert>}
                   <Form className="mt-4" onSubmit={this.onSubmit}>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Your First Name</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -115,7 +137,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Your Last Name</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -131,7 +153,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Your Email</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -147,7 +169,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Your Contact Number</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -163,7 +185,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Date of birth</Form.Label>
                       <Datetime
                         timeFormat={false}
@@ -183,12 +205,13 @@ export class DriverSignUpPage extends Component {
                             <Form.Control
                               value={this.state.birthday ? moment(this.state.birthday).format('YYYY-MM-DD') : ''}
                               readOnly
+                              required
                             />
                           </InputGroup>
                         )}
                       />
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Enter Address</Form.Label>
                       <Form.Control
                         name="address"
@@ -200,7 +223,7 @@ export class DriverSignUpPage extends Component {
                         onChange={this.handleInputChange}
                       />
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Joined date</Form.Label>
                       <Datetime
                         timeFormat={false}
@@ -220,12 +243,13 @@ export class DriverSignUpPage extends Component {
                             <Form.Control
                               value={this.state.joinedDate ? moment(this.state.joinedDate).format('YYYY-MM-DD') : ''}
                               readOnly
+                              required
                             />
                           </InputGroup>
                         )}
                       />
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Driving license</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -241,7 +265,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Car number</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -257,7 +281,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Your Password</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -273,7 +297,7 @@ export class DriverSignUpPage extends Component {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group className="mb-4">
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Confirm Password</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
