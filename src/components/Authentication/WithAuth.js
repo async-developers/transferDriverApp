@@ -21,7 +21,8 @@ export default function withAuth(ComponentInside) {
           role: '',  // 'admin' or 'driver'
         },
         tripAssigned: false, // Track if a trip has been assigned,
-        newTasks:[]
+        newTasks:[],
+        location: null
       }
     }
 
@@ -54,9 +55,41 @@ export default function withAuth(ComponentInside) {
       }
     };
 
+    
+    sendLocationToServer = async (latitude, longitude, driverId) => {
+      try {
+        await axios.post('https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/location', {
+          latitude,
+          longitude,
+          driverId
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLocation = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            this.setState({ location: { latitude, longitude }});
+            const driverId = this.state.userData.id;
+            await this.sendLocationToServer(latitude, longitude, driverId);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
+    };
+
     fetchUserData = async (email, userRole) => {
       try {
         const userDataResponse = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/loginDetails?email=${email}&userRole=${userRole}`);
+        this.getLocation();
         const { driverId, firstName, lastName, email: emailAddress } = userDataResponse.data;
         this.setState({
           loading: false,
@@ -86,6 +119,7 @@ export default function withAuth(ComponentInside) {
         this.setState({ loading: false, redirect: true });
       }
     };
+
 
     render() {
       const { loading, redirect, userData,tripAssigned, newTasks  } = this.state;
