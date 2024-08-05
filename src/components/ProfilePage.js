@@ -18,7 +18,7 @@ const ProfilePage = ({ userData }) => {
     joinDate: '',
     approvalStatus: '',
     driverLicence: '',
-    validUntil: '',
+    validUpto: '',
     carNumber: '',
     carModel: ''
   });
@@ -49,7 +49,7 @@ const ProfilePage = ({ userData }) => {
         joinDate: moment(user.joiningDate).format('YYYY-MM-DD'),
         approvalStatus: user.approvalStatus || 'approved',
         driverLicence: user.driverLicence,
-        validUntil: user.validUntil,
+        validUpto: user.validUpto,
         carNumber: user.carNumber,
         carModel: user.carModel
       });
@@ -293,9 +293,9 @@ const ProfilePage = ({ userData }) => {
                       </div>
                     </Col>
                     <Col xs={6}>
-                      <div id="validUntil">
+                      <div id="validUpto">
                         <p className='mb-2 upperCase-keyword'><strong>Valid until</strong></p>
-                        <p className="text-muted mb-2 upperCase-keyword">{formData.validUntil}</p>
+                        <p className="text-muted mb-2 upperCase-keyword">{formData.validUpto ? moment(formData.validUpto).isValid ? moment(formData.validUpto).format("DD-MM-YYYY") : '--' : '--'}</p>
                       </div>
                     </Col>
                   </Row>

@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faLocationArrow, faMapMarkerAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa, faFolderOpen, faGlobeEurope, faPaperclip, faUserPlus, faLocationArrow, faMapMarkerAlt, faAngleRight, faMap, faMapPin, faMapSigns, faMapMarkedAlt, faRoad } from '@fortawesome/free-solid-svg-icons';
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Card, Image, Button, ListGroup, ProgressBar, Modal, Form, Badge, Alert } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
@@ -11,6 +11,7 @@ import ProfileCover from "../assets/img/profile-cover.jpg";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import CalculateDistance from "../pages/components/CalculateDistance";
 
 
 export const ProfileCardWidget = () => {
@@ -150,14 +151,14 @@ export const CounterWidget = (props) => {
       </Card.Header>
       <Card.Body className="py-3 px-3">
         <div className="location-wrapper">
-          <div className="d-flex justify-content-start mt-2">
+          <div className="d-flex justify-content-start mb-3 align-items-center">
             <div>
               <span className="circle-svg">
                 <FontAwesomeIcon icon={faLocationArrow} className="progress-label text-secondary mt-1" />
               </span>
             </div>
             <div className="px-2">
-              <p className="f-12">
+              <p className="f-12 mb-0">
                 {pickUpPoint}
               </p>
             </div>
@@ -167,17 +168,27 @@ export const CounterWidget = (props) => {
               {moment(pickUpDate).format('Do MMMM')} {moment(pickUpTime, 'HH:mm:ss').format('hh:mm A')}
             </span>
           </div>
-          <div className="d-flex justify-content-start mt-3">
+          <div className="d-flex justify-content-start align-items-center mt-3">
             <span className="circle-svg">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="progress-label text-danger mt-1" />
             </span>
             <div className="px-2">
-              <p className="f-12">
+              <p className="f-12 mb-0">
                 {dropPoint}
               </p>
             </div>
           </div>
         </div>
+        <div className="d-flex justify-content-start align-items-center">
+            <span className="circle-svg">
+              <FontAwesomeIcon icon={faRoad} className="progress-label text-danger mt-1" />
+            </span>
+            <div className="px-2">
+              <p className="f-12 mb-0">
+                <CalculateDistance origin={pickUpPoint} destination={dropPoint} show={false} />
+              </p>
+            </div>
+          </div>
         {/* Display error message if there is an error */}
         {error && (
           <div className="text-danger mt-2 fs-12">

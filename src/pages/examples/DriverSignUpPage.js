@@ -27,12 +27,15 @@ export class DriverSignUpPage extends Component {
       userRole: 'driver',  // Added userRole
       loading: false,
       error: '',
-      success: ''
+      success: '',
+      validUpto: '',
+      carModel: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.changeBirthDate = this.changeBirthDate.bind(this);
     this.changeJoiningDate = this.changeJoiningDate.bind(this);
+    this.changeLicenceExpiryDate = this.changeLicenceExpiryDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.scrollRef = React.createRef();
     this.scrollToMessageAfterSubmitForm = this.scrollToMessageAfterSubmitForm.bind(this);
@@ -57,6 +60,10 @@ export class DriverSignUpPage extends Component {
 
   changeJoiningDate(event) {
     this.setState({ joinedDate: event.format('YYYY-MM-DD') });
+  }
+
+  changeLicenceExpiryDate(event) {
+    this.setState({ validUpto: event.format('YYYY-MM-DD') });
   }
 
   async onSubmit(e) {
@@ -266,6 +273,31 @@ export class DriverSignUpPage extends Component {
                       </InputGroup>
                     </Form.Group>
                     <Form.Group className="mb-4 required">
+                      <Form.Label>Valid Upto</Form.Label>
+                      <Datetime
+                        timeFormat={false}
+                        closeOnSelect={true}
+                        onChange={this.changeLicenceExpiryDate}
+                        value={this.state.validUpto}
+                        inputProps={{
+                          name: 'validUpto',
+                          required: true,
+                          placeholder: 'mm/dd/yyyy',
+                        }}
+                        renderInput={(props, openCalendar) => (
+                          <InputGroup onClick={openCalendar}>
+                            <InputGroup.Text>
+                              <FontAwesomeIcon icon={faCalendarAlt} />
+                            </InputGroup.Text>
+                            <Form.Control
+                              value={this.state.validUpto ? moment(this.state.validUpto).format('YYYY-MM-DD') : ''}
+                              readOnly
+                            />
+                          </InputGroup>
+                        )}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-4 required">
                       <Form.Label>Car number</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
@@ -277,6 +309,22 @@ export class DriverSignUpPage extends Component {
                           required
                           type="text"
                           placeholder="Car Number"
+                          onChange={this.handleInputChange}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-4 required">
+                      <Form.Label>Car Model</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faPersonBooth} />
+                        </InputGroup.Text>
+                        <Form.Control
+                          name="carModel"
+                          value={this.state.carModel}
+                          required
+                          type="text"
+                          placeholder="Car Model"
                           onChange={this.handleInputChange}
                         />
                       </InputGroup>

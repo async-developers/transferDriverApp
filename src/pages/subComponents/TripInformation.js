@@ -4,6 +4,7 @@ import { faClock, faLocationArrow, faMapMarkerAlt, faCalendarAlt, faPhone, faUse
 import { Card } from '@themesberg/react-bootstrap';
 import { ListGroup } from '@themesberg/react-bootstrap';
 import moment from 'moment-timezone';
+import CalculateDistance from "../components/CalculateDistance";
 
 export default (tripData) => {
 
@@ -97,6 +98,7 @@ export default (tripData) => {
                             </div>
                         </div>
                     </div>
+                    <CalculateDistance origin={tripData.startLocation} destination={tripData.endLocation} show={true}/>
                 </section>
                 <section class="py-4 pb-0 border-top">
                     <div className="mb-2">

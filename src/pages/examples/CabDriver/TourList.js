@@ -28,8 +28,14 @@ const TourList = ({ data }) => {
   const fetchTours = async () => {
     try {
       const response = await axios.get(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/fetchUpcomingAssignedTours?driverId=${data.id}&page=${currentPage}`);
-      setTours(response.data);
-      setTotalPages(response.data.totalPages);
+      if(response.data.length === 0){
+        setTours([]);
+        setTotalPages(0);
+      }
+      else{
+        setTours(response.data.data)
+        setTotalPages(response.data.totalPages);
+      }
     } catch (error) {
       console.error('Error fetching tours:', error);
     }
