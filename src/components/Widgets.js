@@ -369,18 +369,7 @@ export const ToursWidgetWithoutIcon = (props) => {
 };
 
 export const upcomingToursCard = (props) => {
-  const { bookingId, pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
-
-  const handleStartTrip = async () => {
-    try {
-      await axios.put(`https://yci26miwxk.execute-api.ap-southeast-1.amazonaws.com/prod/tours/${bookingId}/status`, {
-        status: "inProgress"
-      });
-    }
-    catch (err) {
-      console.error('Error starting trip:', err);
-    }
-  };
+  const { pickUpDate, pickUpTime, pickUpPoint, dropPoint, status } = props;
 
   return (
     <>

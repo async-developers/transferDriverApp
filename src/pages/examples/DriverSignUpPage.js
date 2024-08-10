@@ -83,6 +83,13 @@ export class DriverSignUpPage extends Component {
       return;
     }
 
+    if(!isNaN(this.state.contactNumber || this.state.contactNumber.length!==10)){
+      this.scrollToMessageAfterSubmitForm();
+      const errorMsg = 'Enter valid contact number';
+      this.setState({ error: errorMsg });
+      return;
+    }
+
     this.setState({ loading: true, error: '', success: '' });
 
     try {
