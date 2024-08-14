@@ -52,7 +52,7 @@ const Wallet = ({ data }) => {
               </Col>
               <Col xs={6} md={6}>
                 <div className='mb-2 d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-4'>
-                    <Button variant="primary" className="m-1 upperCase-keyword text-dark me-2 dropdown-toggle btn btn-secondary" onClick={handleSubmit} disabled={isDisabled}>
+                    <Button variant="primary" size="sm" className="m-1 upperCase-keyword text-dark me-2 dropdown-toggle btn btn-secondary" onClick={handleSubmit} disabled={isDisabled}>
                        Withdraw
                     </Button>
                 </div>

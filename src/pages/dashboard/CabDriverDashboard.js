@@ -16,6 +16,7 @@ const CabDriverDashboard = ({ data }) => {
   const [userId, setUserId] = useState('');
   const [nextTrip, setNextTrip] = useState(null);
   const [loading, setLoading] = useState(true); // State to manage loading state
+  const [isTripStatusUpdated, setTripStatusUpdated] = useState();
 
   const [analyticsData, setAnalyticsData] = useState({
     totalAssignedTours: 0,
@@ -61,7 +62,7 @@ const CabDriverDashboard = ({ data }) => {
     setUserName(data.username);
     setUserId(data.id);
     fetchDriverAnalytics();
-  }, [data]);
+  }, [data, isTripStatusUpdated]);
 
   const findNextTrip = (trips) => {
     if (!trips || trips.length === 0) return null;
@@ -80,6 +81,7 @@ const CabDriverDashboard = ({ data }) => {
   if (loading) {
     return <LoaderComponent />;
   }
+
 
   return (
     <>

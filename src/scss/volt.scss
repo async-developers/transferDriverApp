@@ -315,3 +315,40 @@
 .multi-button-display{
   width: 48%;
 }
+
+
+//ACHIEVEMENT.CSS
+.f-80{
+  font-size: 80px;
+}
+
+.f-16{
+  font-size: 16px;
+}
+
+.f-32{
+  font-size: 32px;
+}
+
+.f-color-silver{
+  color: #aeaeae;
+}
+
+.fc-white{
+  color:#fff;
+}
+
+.dark-border{
+  border-color: #1c2540!important;
+}
+
+.dark-modal-view{
+  background-color: #242e4c!important;
+}
+
+.box-shadow-dark .modal-content{
+    border: 0;
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 3px 0, rgba(0, 0, 0, .06) 0 1px 2px 0;
+    border-radius: 2px;
+    overflow: hidden;
+}
