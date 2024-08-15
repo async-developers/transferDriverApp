@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle, faSignOutAlt, faMedal } from "@fortawesome/free-solid-svg-icons";
 import { Image, Navbar, Dropdown, Container, Nav } from '@themesberg/react-bootstrap';
 import { Redirect } from 'react-router-dom';
 
@@ -35,7 +35,10 @@ const NavbarComponent = ({ data }) => {
   return (
     <Navbar variant="light" expanded className="ps-0 pe-4 pb-0 navbar-light d-none d-sm-block">
       <Container fluid className="px-0">
-        <div className="d-flex justify-content-end w-100">
+        <div className="d-flex justify-content-end w-100 align-items-center">
+          <div className="f-32 f-color-silver">
+            <FontAwesomeIcon icon={faMedal} />
+          </div>
           <Nav className="align-items-center">
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">

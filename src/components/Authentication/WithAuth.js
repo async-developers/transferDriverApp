@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar';
 import Preloader from '../Preloader'; // Assuming you have a Preloader component
 import TripAssignedModal from '../widgets/TripAssignedModal';
 import SidebarDriver from '../SidebarDriver';
+import Achievements from '../../pages/examples/widget/Achievements';
 
 export default function withAuth(ComponentInside) {
   return class extends Component {
@@ -133,6 +134,7 @@ export default function withAuth(ComponentInside) {
       }
       return (
           <>
+            <Achievements />
             <SidebarDriver data={userData}/>
             <Navbar data={userData} isAdmin={userData.role === 'driver'} />
             {tripAssigned && <TripAssignedModal data={{...newTasks[0], driverId: userData.id}} />}
